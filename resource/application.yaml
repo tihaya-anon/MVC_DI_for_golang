@@ -1,0 +1,8 @@
+database:
+  host: localhost
+  port: 8080
+  name: name
+  uri: mysql://${.host}:${.port}/${.name}
+app:
+  host: localhost
+  port: 8080
