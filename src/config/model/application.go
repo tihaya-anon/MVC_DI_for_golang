@@ -6,6 +6,8 @@ type app struct {
 }
 
 type database struct {
+    Username string
+    Password string
     Host string
     Port int
     Name string
