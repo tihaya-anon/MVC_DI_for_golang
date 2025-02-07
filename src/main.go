@@ -1,10 +1,9 @@
 package main
 
 import (
-	"MVC_DI/config"
-	"fmt"
+	"MVC_DI/test"
 )
 
 func main() {
-	fmt.Printf("init success, your appication config is\n%+v\n", *config.Application)
+	test.TestGen()
 }

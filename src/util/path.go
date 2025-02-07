@@ -3,6 +3,7 @@ package util
 import (
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"path/filepath"
 )
@@ -104,4 +105,9 @@ func MoveDir(oldPath, newPath string) error {
 
 	fmt.Println("Folder moved successfully.")
 	return nil
+}
+func CreateDir(path string) {
+	if err := os.MkdirAll(path, os.ModePerm); err != nil {
+		log.Fatalf("unable to create dir: %s, error: %v", path, err)
+	}
 }
