@@ -2,5 +2,74 @@
   "yaml.schemas": {
     "schema/application.json": "/application.yaml",
     "schema/test.json": "/test.yaml"
-  }
+  },
+  "workbench.colorTheme": "Solarized Light",
+  "files.autoSave": "afterDelay",
+  "editor.formatOnSave": true,
+  "explorer.confirmDelete": false,
+  "editor.tabSize": 2,
+  "git.enableSmartCommit": true,
+  "editor.guides.indentation": true,
+  "indentRainbow.colors": [
+    "rgba(255,255,64, 0.07)",
+    "rgba(127,255,127,0.07)",
+    "rgba(255,127,255,0.07)",
+    "rgba(79, 236,236,0.07)"
+  ],
+  "editor.guides.bracketPairs": false,
+  "material-icon-theme.activeIconPack": "react",
+  "material-icon-theme.folders.customClones": [
+    {
+      "name": "Comments",
+      "base": "messages",
+      "color": "light-green-500",
+      "folderNames": ["comment", "comments"],
+      "rootFolderNames": ["section"]
+    },
+    {
+      "name": "Service",
+      "base": "api",
+      "color": "blue-600",
+      "folderNames": ["service"]
+    },
+    {
+      "name": "impl",
+      "base": "api",
+      "color": "brown-600",
+      "folderNames": ["impl"],
+      "rootFolderNames": ["service"]
+    },
+    {
+      "name": "Model",
+      "base": "class",
+      "color": "green-500",
+      "folderNames": ["model"]
+    }
+  ],
+  "material-icon-theme.folders.theme": "specific",
+  "material-icon-theme.folders.associations": {
+    "vo": "Enum",
+    "dto": "Enum",
+    "store": "Store",
+    "aspect": "Middleware",
+    "interceptor": "Middleware",
+    "message": "Messages",
+    "listener": "Event",
+    "entity": "Enum",
+    "map": "Mappings",
+    "mapper": "Mappings",
+    "exception": "Error",
+    "payload": "Upload",
+    "section": "Components",
+    "ref": "Contract",
+    "user": "Admin",
+    "tag": "Custom",
+    "resp": "Packages",
+    "global": "Base"
+  },
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "editor.wordWrap": "on",
+  "workbench.iconTheme": "material-icon-theme",
+  "indentRainbow.excludedLanguages": ["java", "plaintext", "go"],
+  "conventionalCommits.scopes": ["post", "user"]
 }

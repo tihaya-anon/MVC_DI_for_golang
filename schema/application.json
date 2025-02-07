@@ -34,6 +34,12 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
         "host": {
           "type": "string"
         },
@@ -47,7 +53,7 @@
           "type": "string"
         }
       },
-      "required": ["host", "name", "port", "uri"],
+      "required": ["username", "password", "host", "name", "port", "uri"],
       "title": "Database"
     }
   }
