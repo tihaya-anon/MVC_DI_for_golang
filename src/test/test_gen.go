@@ -1,7 +1,7 @@
 package test
 
-import "MVC_DI/util/gen_mvc"
+import "MVC_DI/util/gen"
 
 func TestGen() {
-	gen_mvc.Generate("MVC_DI", []string{"user"})
+	gen.Generate("MVC_DI", []string{"user"})
 }

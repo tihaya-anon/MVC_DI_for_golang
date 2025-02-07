@@ -1,4 +1,4 @@
-package gen_mvc
+package gen
 
 import (
 	"MVC_DI/util"
@@ -8,7 +8,7 @@ import (
 )
 
 // generateService 生成 Service 和 ServiceImpl
-func GenerateService(pkg, basePath, entity string, tables []string) {
+func generateService(pkg, basePath, entity string, tables []string) {
 	for _, table := range tables {
 		_generateService(pkg, basePath, entity, table)
 	}

@@ -1,4 +1,4 @@
-package gen_mvc
+package gen
 
 import (
 	"MVC_DI/util"
@@ -8,7 +8,7 @@ import (
 )
 
 // generateMapper 生成 Mapper 和 MapperImpl
-func GenerateMapper(pkg, basePath, entity string, tables []string) {
+func generateMapper(pkg, basePath, entity string, tables []string) {
 	for _, table := range tables {
 		_generateMapper(pkg, basePath, entity, table)
 	}
