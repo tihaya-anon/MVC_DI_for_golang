@@ -1,0 +1,6 @@
+{
+  "yaml.schemas": {
+    "schema/application.json": "/application.yaml",
+    "schema/test.json": "/test.yaml"
+  }
+}
