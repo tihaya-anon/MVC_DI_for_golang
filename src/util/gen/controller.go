@@ -1,4 +1,4 @@
-package gen_mvc
+package gen
 
 import (
 	"MVC_DI/util"
@@ -8,7 +8,7 @@ import (
 )
 
 // generateGinController 生成基于 Gin 的 Controller
-func GenerateGinController(pkg, basePath, entity string, tables []string) {
+func generateGinController(pkg, basePath, entity string, tables []string) {
 	for _, table := range tables {
 		_generateGinController(pkg, basePath, entity, table)
 	}

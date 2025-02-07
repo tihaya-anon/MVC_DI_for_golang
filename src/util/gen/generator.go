@@ -1,4 +1,4 @@
-package gen_mvc
+package gen
 
 import (
 	"MVC_DI/config"
@@ -14,11 +14,11 @@ import (
 	"gorm.io/gorm"
 )
 
-type CommonMethod struct {
+type commonMethod struct {
 	ID int64
 }
 
-func (commonMethod *CommonMethod) BeforeCreate(tx *gorm.DB) error {
+func (commonMethod *commonMethod) BeforeCreate(tx *gorm.DB) error {
 	commonMethod.ID = int64(uuid.New().ID())
 	return nil
 }
@@ -40,13 +40,13 @@ func Generate(pkg string, entities []string) {
 		tables := getEntityTables(gormDB, entity)
 
 		// 生成 Service 和 ServiceImpl
-		GenerateService(pkg, basePath, entity, tables)
+		generateService(pkg, basePath, entity, tables)
 
 		// 生成 Mapper 和 MapperImpl
-		GenerateMapper(pkg, basePath, entity, tables)
+		generateMapper(pkg, basePath, entity, tables)
 
 		// 生成基于 Gin 的 Controller
-		GenerateGinController(pkg, basePath, entity, tables)
+		generateGinController(pkg, basePath, entity, tables)
 	}
 }
 
@@ -94,7 +94,7 @@ func generateQuery(basePath, entity string, gormDB *gorm.DB) {
 	g.ApplyBasic(g.GenerateAllTable(
 		gen.FieldType("id", "int64"),
 		gen.FieldJSONTag("id", "id"),
-		gen.WithMethod(CommonMethod{}))...)
+		gen.WithMethod(commonMethod{}))...)
 	g.Execute()
 	util.MoveDir(tmpPath, path.Join("database", entity))
 }
