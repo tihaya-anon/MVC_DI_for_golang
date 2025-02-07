@@ -4,18 +4,17 @@ import (
 	"MVC_DI/util"
 	"log"
 	"os"
-	"strings"
 	"text/template"
 )
 
 // generateService 生成 Service 和 ServiceImpl
-func GenerateService(pkg, basePath string, tables []string) {
+func GenerateService(pkg, basePath, entity string, tables []string) {
 	for _, table := range tables {
-		_generateService(pkg, basePath, table)
+		_generateService(pkg, basePath, entity, table)
 	}
 }
 
-func _generateService(pkg, basePath, table string) {
+func _generateService(pkg, basePath, entity, table string) {
 	servicePath := basePath + "/service"
 	serviceImplPath := servicePath + "/impl"
 
@@ -47,10 +46,19 @@ type {{.TableName}}Service interface {
 	serviceImplTemplate := `package impl
 
 import (
-	"{{.Pkg}}/section/{{.Entity}}/service"
+	"{{.pkg}}/section/{{.entity}}/service"
+	"{{.pkg}}/section/{{.entity}}/mapper"
 )
 
-type {{.TableName}}ServiceImpl struct{}
+type {{.TableName}}ServiceImpl struct{
+	{{.TableName}}Mapper mapper.{{.TableName}}Mapper
+}
+
+func New{{.TableName}}ServiceImpl({{.tableName}}Mapper mapper.{{.TableName}}Mapper) *{{.TableName}}ServiceImpl {
+	return &{{.TableName}}ServiceImpl{
+		{{.TableName}}Mapper: {{.tableName}}Mapper,
+	}
+}
 
 var _ service.{{.TableName}}Service = (*{{.TableName}}ServiceImpl)(nil)
 
@@ -65,8 +73,9 @@ var _ service.{{.TableName}}Service = (*{{.TableName}}ServiceImpl)(nil)
 
 	if err := tmpl.Execute(file, map[string]string{
 		"TableName": util.SnakeToPascal(table),
-		"Entity":    strings.Split(table, "_")[0],
-		"Pkg":       pkg,
+		"tableName": util.SnakeToCamel(table),
+		"entity":    entity,
+		"pkg":       pkg,
 	}); err != nil {
 		log.Fatalf("generate service impl failed: %v", err)
 	}

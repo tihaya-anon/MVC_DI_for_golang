@@ -40,10 +40,10 @@ func Generate(pkg string, entities []string) {
 		tables := getEntityTables(gormDB, entity)
 
 		// 生成 Service 和 ServiceImpl
-		GenerateService(pkg, basePath, tables)
+		GenerateService(pkg, basePath, entity, tables)
 
 		// 生成 Mapper 和 MapperImpl
-		GenerateMapper(pkg, basePath, tables)
+		GenerateMapper(pkg, basePath, entity, tables)
 
 		// 生成基于 Gin 的 Controller
 		GenerateGinController(pkg, basePath, entity, tables)

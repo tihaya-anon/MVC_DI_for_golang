@@ -4,18 +4,17 @@ import (
 	"MVC_DI/util"
 	"log"
 	"os"
-	"strings"
 	"text/template"
 )
 
 // generateMapper 生成 Mapper 和 MapperImpl
-func GenerateMapper(pkg, basePath string, tables []string) {
+func GenerateMapper(pkg, basePath, entity string, tables []string) {
 	for _, table := range tables {
-		_generateMapper(pkg, basePath, table)
+		_generateMapper(pkg, basePath, entity, table)
 	}
 }
 
-func _generateMapper(pkg, basePath, table string) {
+func _generateMapper(pkg, basePath, entity, table string) {
 	mapperPath := basePath + "/mapper"
 	mapperImplPath := mapperPath + "/impl"
 
@@ -47,10 +46,14 @@ type {{.TableName}}Mapper interface {
 	mapperImplTemplate := `package impl
 
 import (
-	"{{.Pkg}}/section/{{.Entity}}/mapper"
+	"{{.pkg}}/section/{{.entity}}/mapper"
 )
 
 type {{.TableName}}MapperImpl struct{}
+
+func New{{.TableName}}MapperImpl() *{{.TableName}}MapperImpl {
+	return &{{.TableName}}MapperImpl{}
+}
 
 var _ mapper.{{.TableName}}Mapper = (*{{.TableName}}MapperImpl)(nil)
 
@@ -65,8 +68,8 @@ var _ mapper.{{.TableName}}Mapper = (*{{.TableName}}MapperImpl)(nil)
 
 	if err := tmpl.Execute(file, map[string]string{
 		"TableName": util.SnakeToPascal(table),
-		"Entity":    strings.Split(table, "_")[0],
-		"Pkg":       pkg,
+		"entity":    entity,
+		"pkg":       pkg,
 	}); err != nil {
 		log.Fatalf("generate mapper impl failed: %v", err)
 	}

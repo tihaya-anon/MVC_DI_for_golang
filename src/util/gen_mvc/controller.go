@@ -23,8 +23,7 @@ func _generateGinController(pkg, basePath, entity, table string) {
 
 import (
 	"github.com/gin-gonic/gin"
-	"{{.Pkg}}/section/{{.Entity}}/service"
-	"{{.Pkg}}/section/{{.Entity}}/service/impl"
+	"{{.pkg}}/section/{{.entity}}/service"
 	"net/http"
 )
 
@@ -32,18 +31,18 @@ type {{.TableName}}Controller struct {
 	{{.TableName}}Service service.{{.TableName}}Service
 }
 
-func New{{.TableName}}Controller() *{{.TableName}}Controller {
+func New{{.TableName}}Controller({{.tableName}}Service service.{{.TableName}}Service) *{{.TableName}}Controller {
 	return &{{.TableName}}Controller{
-		{{.TableName}}Service: &impl.{{.TableName}}ServiceImpl{},
+		{{.TableName}}Service: {{.tableName}}Service,
 	}
 }
 
 // RegisterRoutes
 func (c *{{.TableName}}Controller) RegisterRoutes(router *gin.Engine) {
-	group := router.Group("/{{.Table}}")
+	group := router.Group("/{{.table}}")
 	{
 		group.GET("/hello", func(ctx *gin.Context) {
-			ctx.String(http.StatusOK, "hello {{.Table}}")
+			ctx.String(http.StatusOK, "hello {{.table}}")
 		})
 	}
 }
@@ -56,10 +55,11 @@ func (c *{{.TableName}}Controller) RegisterRoutes(router *gin.Engine) {
 	defer file.Close()
 
 	if err := tmpl.Execute(file, map[string]interface{}{
-		"Entity":    entity,
+		"entity":    entity,
 		"TableName": util.SnakeToPascal(table),
-		"Table":     table,
-		"Pkg":       pkg,
+		"tableName": util.SnakeToCamel(table),
+		"table":     table,
+		"pkg":       pkg,
 	}); err != nil {
 		log.Fatalf("generate controller failed: %v", err)
 	}
