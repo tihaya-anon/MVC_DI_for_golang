@@ -12,6 +12,9 @@ import (
 	"github.com/spf13/viper"
 )
 
+// # Parse
+//
+// Parse Loads a config file into a struct
 func Parse[T any](file string, definition *T) error {
 	pathStr, fileStr := path.Split(file)
 	pathStr = path.Join("..", "resource", pathStr)
@@ -29,7 +32,6 @@ func Parse[T any](file string, definition *T) error {
 		return err
 	}
 
-	// 自定义 DecoderConfigOption 来将 snake_case 转换为 PascalCase
 	decoderOption := viper.DecodeHook(mapstructure.ComposeDecodeHookFunc(
 		mapstructure.StringToTimeHookFunc(time.RFC3339),
 		mapstructure.StringToSliceHookFunc(","),

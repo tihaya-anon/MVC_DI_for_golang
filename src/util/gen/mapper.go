@@ -6,7 +6,9 @@ import (
 	"path"
 )
 
-// GenerateMapper 生成 Mapper 和 MapperImpl
+// # GenerateMapper
+//
+// generates Mapper and MapperImpl
 func GenerateMapper(pkg, basePath, entity string, tables []string) {
 	for _, table := range tables {
 		_generateMapper(pkg, basePath, entity, table)
@@ -21,10 +23,10 @@ func _generateMapper(pkg, basePath, entity, table string) {
 	interfaceTemplatePath := append(mapperTemplatePath, global.PATH.RESOURCE.TEMPLATE.MAPPER.INTERFACE...)
 	interfacePath := append(mapperDir, global.PATH.MAPPER.INTERFACE...)
 
-	GenerateTemplate(pkg, path.Join(interfaceTemplatePath...), path.Join(interfacePath...),"_mapper", entity, table)
+	GenerateTemplate(pkg, path.Join(interfaceTemplatePath...), path.Join(interfacePath...), "_mapper", entity, table)
 
 	implTemplatePath := append(mapperTemplatePath, global.PATH.RESOURCE.TEMPLATE.MAPPER.IMPL...)
 	implPath := append(mapperDir, global.PATH.MAPPER.IMPL...)
 
-	GenerateTemplate(pkg, path.Join(implTemplatePath...), path.Join(implPath...),"_mapper_impl", entity, table)
+	GenerateTemplate(pkg, path.Join(implTemplatePath...), path.Join(implPath...), "_mapper_impl", entity, table)
 }

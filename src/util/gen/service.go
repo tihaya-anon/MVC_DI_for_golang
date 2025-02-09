@@ -6,7 +6,9 @@ import (
 	"path"
 )
 
-// GenerateService 生成 Service 和 ServiceImpl
+// # GenerateService
+//
+// generates Service and ServiceImpl
 func GenerateService(pkg, basePath, entity string, tables []string) {
 	for _, table := range tables {
 		_generateService(pkg, basePath, entity, table)

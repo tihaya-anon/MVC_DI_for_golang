@@ -8,6 +8,23 @@ import (
 	"text/template"
 )
 
+// # GenerateTemplate
+//
+// generates the code file based on the given template
+// and table information.
+//
+// It will replace the following placeholders in the template with the
+// given table information:
+//
+//   - entity_name
+//   - TableName
+//   - tableName
+//   - table_name
+//   - table_name_hyphen
+//   - pkg
+//
+// The generated file will be saved in the given targetPath with the name
+// {table_name}{targetFilePostfix}.go
 func GenerateTemplate(pkg, templatePath, targetPath, targetFilePostfix, entity, table string) {
 	templateFile, err := os.ReadFile(templatePath)
 	if err != nil {

@@ -23,7 +23,11 @@ func (commonMethod *commonMethod) BeforeCreate(tx *gorm.DB) error {
 	return nil
 }
 
-// Generate 生成代码
+// # Generate
+//
+// generate code for the given entities
+//
+// This function will generate query, service, service impl, mapper, mapper impl, and gin controller for the given entities.
 func Generate(pkg string, entities []string) {
 	gormDB, err := gorm.Open(mysql.Open(config.Application.Database.Uri), &gorm.Config{})
 	if err != nil {
@@ -33,32 +37,39 @@ func Generate(pkg string, entities []string) {
 
 	for _, entity := range entities {
 		basePath := "./section/"
-		// 生成 Query
+
+		//  generate query
 		generateQuery(basePath, entity, gormDB)
 
-		// 获取当前实体的所有表
+		// get all tables for the current entity
 		tables := getEntityTables(gormDB, entity)
 
-		// 生成 Service 和 ServiceImpl
+		//  generate service and service impl
 		GenerateService(pkg, basePath, entity, tables)
 
-		// 生成 Mapper 和 MapperImpl
+		//  generate mapper and mapper impl
 		GenerateMapper(pkg, basePath, entity, tables)
 
-		// 生成基于 Gin 的 Controller
+		//  generate gin controller
 		GenerateGinController(pkg, basePath, entity, tables)
 	}
 }
 
-// getEntityTables 获取当前实体的所有表
+// # getEntityTables 
+//
+//returns all tables for the given entity
 func getEntityTables(db *gorm.DB, entity string) []string {
-	var tables []string
+	// execute SHOW TABLES LIKE 'entity%' to get all tables
+	// that start with the given entity
 	rows, err := db.Raw("SHOW TABLES LIKE '" + entity + "%'").Rows()
 	if err != nil {
 		log.Fatalf("get tables failed: %v", err)
 	}
 	defer rows.Close()
 
+	// iterate over the result set and append the table names
+	// to the tables slice
+	var tables []string
 	for rows.Next() {
 		var table string
 		if err := rows.Scan(&table); err != nil {
@@ -69,27 +80,33 @@ func getEntityTables(db *gorm.DB, entity string) []string {
 	return tables
 }
 
-// generateQuery 生成 Query
+// # generateQuery
+//
+// generate Query for the given entity
+//
+// This function generates query code for the given entity. The code is generated
+// in a temporary directory and then moved to the final location.
 func generateQuery(basePath, entity string, gormDB *gorm.DB) {
-	tmpPath :=path.Join(basePath, entity, "query")
+	tmpPath := path.Join(basePath, entity, "query")
 
-	// 创建目录
+	// create the directory
 	util.CreateDir(tmpPath)
 
-	// 初始化生成器
+	// initialize the generator
 	g := gen.NewGenerator(gen.Config{
 		OutPath: tmpPath,
 		Mode:    gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface,
 	})
 	g.UseDB(gormDB)
 
-	// 生成 Query 代码
+	// generate Query code
 	g.WithTableNameStrategy(func(tableName string) (targetTableName string) {
 		if strings.HasPrefix(tableName, entity) {
 			return tableName
 		}
 		return ""
 	})
+
 	// gen.WithMethod(CommonMethod{})
 	g.ApplyBasic(g.GenerateAllTable(
 		gen.FieldType("id", "int64"),
