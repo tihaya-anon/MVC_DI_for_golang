@@ -7,10 +7,10 @@ import (
 )
 
 func (b *{{.TableName}}ServiceBuilder) Build() service.{{.TableName}}Service {
-	if b.{{.TableName}}ServiceImpl.{{.TableName}}Mapper == nil {
+	if b.{{.tableName}}ServiceImpl.{{.TableName}}Mapper == nil && b.isStrict {
 		panic("`{{.TableName}}Mapper` is required")
 	}
-	return b.{{.TableName}}ServiceImpl
+	return b.{{.tableName}}ServiceImpl
 }
 
 func (b *{{.TableName}}ServiceBuilder) With{{.TableName}}Mapper(mapper mapper.{{.TableName}}Mapper) *{{.TableName}}ServiceBuilder {
@@ -20,11 +20,17 @@ func (b *{{.TableName}}ServiceBuilder) With{{.TableName}}Mapper(mapper mapper.{{
 
 // BUILDER
 type {{.TableName}}ServiceBuilder struct {
-	{{.tableName}}ServiceImpl *core.{{.TableName}}ServiceImpl
+  isStrict bool
+	{{.tableName}}ServiceImpl *impl.{{.TableName}}ServiceImpl
 }
 
-func {{.TableName}}ServiceBuilder() *{{.TableName}}ServiceBuilder {
+func New{{.TableName}}ServiceBuilder() *{{.TableName}}ServiceBuilder {
 	return &{{.TableName}}ServiceBuilder{
-		{{.tableName}}ServiceImpl: &core.{{.TableName}}ServiceImpl{},
+		{{.tableName}}ServiceImpl: &impl.{{.TableName}}ServiceImpl{},
 	}
+}
+
+func (b *{{.TableName}}ServiceBuilder) UseStrict() *{{.TableName}}ServiceBuilder { 
+  b.isStrict = true
+  return b
 }

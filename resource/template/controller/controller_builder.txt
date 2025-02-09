@@ -1,11 +1,11 @@
-package controller
+package builder
 
 import (
   "{{.pkg}}/section/{{.entity}}/service"
-  "{{.pkg}}/section/{{.entity}}/controller/core"
+  "{{.pkg}}/section/{{.entity}}/controller"
 )
 
-func (b *{{.TableName}}ControllerBuilder) Build() *core.{{.TableName}}Controller {
+func (b *{{.TableName}}ControllerBuilder) Build() *controller.{{.TableName}}Controller {
   if b.{{.tableName}}Controller.{{.TableName}}Service == nil && b.isStrict {
     panic("`{{.TableName}}Service` is required")
   }
@@ -21,13 +21,13 @@ func (b *{{.TableName}}ControllerBuilder) With{{.TableName}}Service({{.tableName
 // BUILDER
 type {{.TableName}}ControllerBuilder struct {
   isStrict bool
-  {{.tableName}}Controller *core.{{.TableName}}Controller
+  {{.tableName}}Controller *controller.{{.TableName}}Controller
 }
 
 func New{{.TableName}}ControllerBuilder() *{{.TableName}}ControllerBuilder {
   return &{{.TableName}}ControllerBuilder{
     isStrict: false,
-    {{.tableName}}Controller: &core.{{.TableName}}Controller{},
+    {{.tableName}}Controller: &controller.{{.TableName}}Controller{},
   }
 }
 

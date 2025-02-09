@@ -15,23 +15,23 @@ var PATH = Path{
 			},
 			SERVICE: Service{
 				DIR:       []string{"..", "resource", "template", "service"},
-				INTERFACE: []string{"service.txt"},
+				INTERFACE: []string{"service_interface.txt"},
 				BUILDER:   []string{"service_builder.txt"},
 				IMPL:      []string{"service_impl.txt"},
 			},
 		},
 	},
 	CONTROLLER: Controller{
-		BUILDER: []string{"controller"},
-		CORE:    []string{"controller", "core"},
+		BUILDER: []string{"controller", "builder"},
+		CORE:    []string{"controller"},
 	},
 	MAPPER: Mapper{
 		INTERFACE: []string{"mapper"},
 		IMPL:      []string{"mapper", "impl"},
 	},
 	SERVICE: Service{
-		INTERFACE: []string{"service", "interface"},
-		BUILDER:   []string{"service"},
+		INTERFACE: []string{"service"},
+		BUILDER:   []string{"service", "builder"},
 		IMPL:      []string{"service", "impl"},
 	},
 }

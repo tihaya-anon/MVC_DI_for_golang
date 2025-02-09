@@ -1,10 +1,9 @@
 package gen
 
 import (
+	"MVC_DI/global"
 	"MVC_DI/util"
-	"log"
-	"os"
-	"text/template"
+	"path"
 )
 
 // GenerateService 生成 Service 和 ServiceImpl
@@ -15,68 +14,22 @@ func GenerateService(pkg, basePath, entity string, tables []string) {
 }
 
 func _generateService(pkg, basePath, entity, table string) {
-	servicePath := basePath + "/service"
-	serviceImplPath := servicePath + "/impl"
+	serviceResourcePath := global.PATH.RESOURCE.TEMPLATE.SERVICE.DIR
+	serviceDir := append([]string{basePath, entity}, global.PATH.SERVICE.DIR...)
+	util.CreateDir(path.Join(serviceDir...))
 
-	util.CreateDir(servicePath)
-	util.CreateDir(serviceImplPath)
-	// 生成 Service 接口
-	serviceFile := servicePath + "/" + table + "_service.go"
-	serviceTemplate := `package service
+	interfaceTemplatePath := append(serviceResourcePath, global.PATH.RESOURCE.TEMPLATE.SERVICE.INTERFACE...)
+	interfacePath := append(serviceDir, global.PATH.SERVICE.INTERFACE...)
 
-type {{.TableName}}Service interface {
-	// DEFINE METHODS
-}
-`
-	tmpl := template.Must(template.New("service").Parse(serviceTemplate))
-	file, err := os.Create(serviceFile)
-	if err != nil {
-		log.Fatalf("create service file failed: %v", err)
-	}
-	defer file.Close()
+	GenerateTemplate(pkg, path.Join(interfaceTemplatePath...), path.Join(interfacePath...), entity, table)
 
-	if err := tmpl.Execute(file, map[string]string{
-		"TableName": util.SnakeToPascal(table),
-	}); err != nil {
-		log.Fatalf("generate service failed: %v", err)
-	}
+	builderTemplatePath := append(serviceResourcePath, global.PATH.RESOURCE.TEMPLATE.SERVICE.BUILDER...)
+	builderPath := append(serviceDir, global.PATH.SERVICE.BUILDER...)
 
-	// 生成 ServiceImpl
-	serviceImplFile := serviceImplPath + "/" + table + "_service_impl.go"
-	serviceImplTemplate := `package impl
+	GenerateTemplate(pkg, path.Join(builderTemplatePath...), path.Join(builderPath...), entity, table)
 
-import (
-	"{{.pkg}}/section/{{.entity}}/service"
-	"{{.pkg}}/section/{{.entity}}/mapper"
-)
+	implTemplatePath := append(serviceResourcePath, global.PATH.RESOURCE.TEMPLATE.SERVICE.IMPL...)
+	implPath := append(serviceDir, global.PATH.SERVICE.IMPL...)
 
-type {{.TableName}}ServiceImpl struct{
-	{{.TableName}}Mapper mapper.{{.TableName}}Mapper
-}
-
-func New{{.TableName}}ServiceImpl({{.tableName}}Mapper mapper.{{.TableName}}Mapper) *{{.TableName}}ServiceImpl {
-	return &{{.TableName}}ServiceImpl{
-		{{.TableName}}Mapper: {{.tableName}}Mapper,
-	}
-}
-
-var _ service.{{.TableName}}Service = (*{{.TableName}}ServiceImpl)(nil)
-
-// IMPLEMENT METHODS
-`
-	tmpl = template.Must(template.New("serviceImpl").Parse(serviceImplTemplate))
-	file, err = os.Create(serviceImplFile)
-	if err != nil {
-		log.Fatalf("create service impl file failed: %v", err)
-	}
-	defer file.Close()
-
-	if err := tmpl.Execute(file, map[string]string{
-		"TableName": util.SnakeToPascal(table),
-		"tableName": util.SnakeToCamel(table),
-		"entity":    entity,
-		"pkg":       pkg,
-	}); err != nil {
-		log.Fatalf("generate service impl failed: %v", err)
-	}
+	GenerateTemplate(pkg, path.Join(implTemplatePath...), path.Join(implPath...), entity, table)
 }
