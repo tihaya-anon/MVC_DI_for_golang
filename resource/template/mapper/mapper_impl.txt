@@ -1,7 +1,7 @@
-package impl
+package {{.entity}}_mapper_impl
 
 import (
-	"{{.pkg}}/section/{{.entity}}/mapper"
+	{{.entity}}_mapper "{{.pkg}}/section/{{.entity}}/mapper"
 )
 
 type {{.TableName}}MapperImpl struct{}
@@ -15,4 +15,4 @@ func New{{.TableName}}MapperImpl() *{{.TableName}}MapperImpl {
 
 
 // INTERFACE
-var _ mapper.{{.TableName}}Mapper = (*{{.TableName}}MapperImpl)(nil)
+var _ {{.entity}}_mapper.{{.TableName}}Mapper = (*{{.TableName}}MapperImpl)(nil)

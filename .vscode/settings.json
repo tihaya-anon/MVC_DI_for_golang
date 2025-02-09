@@ -33,17 +33,16 @@
       "folderNames": ["service"]
     },
     {
-      "name": "impl",
-      "base": "api",
-      "color": "brown-600",
-      "folderNames": ["impl"],
-      "rootFolderNames": ["service"]
-    },
-    {
       "name": "Model",
       "base": "class",
       "color": "green-500",
       "folderNames": ["model"]
+    },
+    {
+      "name": "Impl",
+      "base": "helper",
+      "color": "brown-500",
+      "folderNames": ["impl"]
     }
   ],
   "material-icon-theme.folders.theme": "specific",
@@ -65,7 +64,8 @@
     "user": "Admin",
     "tag": "Custom",
     "resp": "Packages",
-    "global": "Base"
+    "global": "Base",
+    "builder": "Project"
   },
   "typescript.updateImportsOnFileMove.enabled": "always",
   "editor.wordWrap": "on",

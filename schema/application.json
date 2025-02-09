@@ -25,9 +25,12 @@
         },
         "port": {
           "type": "integer"
+        },
+        "uri": {
+          "type": "string"
         }
       },
-      "required": ["host", "port"],
+      "required": ["host", "port", "uri"],
       "title": "App"
     },
     "Database": {

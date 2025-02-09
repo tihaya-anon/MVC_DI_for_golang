@@ -8,3 +8,4 @@ database:
 app:
   host: localhost
   port: 8080
+  uri: ${.host}:${.port}

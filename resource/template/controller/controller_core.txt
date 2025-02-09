@@ -1,13 +1,13 @@
-package controller
+package {{.entity}}_controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"{{.pkg}}/section/{{.entity}}/service"
+	{{.entity}}_service "{{.pkg}}/section/{{.entity}}/service"
 	"net/http"
 )
 
 type {{.TableName}}Controller struct {
-	{{.TableName}}Service service.{{.TableName}}Service
+	{{.TableName}}Service {{.entity}}_service.{{.TableName}}Service
 }
 
 // RegisterRoutes

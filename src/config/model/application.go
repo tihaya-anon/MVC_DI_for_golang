@@ -3,6 +3,7 @@ package model
 type app struct {
     Host string
     Port int
+    Uri string
 }
 
 type database struct {

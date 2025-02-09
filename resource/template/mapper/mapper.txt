@@ -1,4 +1,4 @@
-package mapper
+package {{.entity}}_mapper
 
 type {{.TableName}}Mapper interface {
 	// DEFINE METHODS

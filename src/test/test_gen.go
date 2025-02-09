@@ -15,3 +15,7 @@ func TestGenController() {
 func TestGenService() {
 	gen.GenerateService("MVC_DI", "section", "user", []string{"user_auth", "user_entry"})
 }
+
+func TestGenMapper() {
+	gen.GenerateMapper("MVC_DI", "section", "user", []string{"user_auth", "user_entry"})
+}

@@ -1,12 +1,12 @@
-package impl
+package {{.entity}}_service_impl
 
 import (
-	"{{.pkg}}/section/{{.entity}}/service"
-	"{{.pkg}}/section/{{.entity}}/mapper"
+	{{.entity}}_service "{{.pkg}}/section/{{.entity}}/service"
+	{{.entity}}_mapper "{{.pkg}}/section/{{.entity}}/mapper"
 )
 
 type {{.TableName}}ServiceImpl struct{
-	{{.TableName}}Mapper mapper.{{.TableName}}Mapper
+	{{.TableName}}Mapper {{.entity}}_mapper.{{.TableName}}Mapper
 }
 
 // IMPLEMENT METHODS
@@ -14,5 +14,5 @@ type {{.TableName}}ServiceImpl struct{
 
 
 // INTERFACE
-var _ service.{{.TableName}}Service = (*{{.TableName}}ServiceImpl)(nil)
+var _ {{.entity}}_service.{{.TableName}}Service = (*{{.TableName}}ServiceImpl)(nil)
 

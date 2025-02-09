@@ -14,16 +14,16 @@ func GenerateGinController(pkg, basePath, entity string, tables []string) {
 }
 
 func _generateGinController(pkg, basePath, entity, table string) {
-	controllerResourcePath := global.PATH.RESOURCE.TEMPLATE.CONTROLLER.DIR
+	controllerTemplatePath := global.PATH.RESOURCE.TEMPLATE.CONTROLLER.DIR
 	controllerDir := append([]string{basePath, entity}, global.PATH.CONTROLLER.DIR...)
 	util.CreateDir(path.Join(controllerDir...))
 
-	coreTemplatePath := append(controllerResourcePath, global.PATH.RESOURCE.TEMPLATE.CONTROLLER.CORE...)
+	coreTemplatePath := append(controllerTemplatePath, global.PATH.RESOURCE.TEMPLATE.CONTROLLER.CORE...)
 	corePath := append(controllerDir, global.PATH.CONTROLLER.CORE...)
 
 	GenerateTemplate(pkg, path.Join(coreTemplatePath...), path.Join(corePath...), entity, table)
 
-	builderTemplatePath := append(controllerResourcePath, global.PATH.RESOURCE.TEMPLATE.CONTROLLER.BUILDER...)
+	builderTemplatePath := append(controllerTemplatePath, global.PATH.RESOURCE.TEMPLATE.CONTROLLER.BUILDER...)
 	builderPath := append(controllerDir, global.PATH.CONTROLLER.BUILDER...)
 
 	GenerateTemplate(pkg, path.Join(builderTemplatePath...), path.Join(builderPath...), entity, table)

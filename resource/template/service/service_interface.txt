@@ -1,4 +1,4 @@
-package service
+package {{.entity}}_service
 
 type {{.TableName}}Service interface {
 	// DEFINE METHODS

@@ -1,10 +1,9 @@
 package gen
 
 import (
+	"MVC_DI/global"
 	"MVC_DI/util"
-	"log"
-	"os"
-	"text/template"
+	"path"
 )
 
 // GenerateMapper 生成 Mapper 和 MapperImpl
@@ -15,62 +14,17 @@ func GenerateMapper(pkg, basePath, entity string, tables []string) {
 }
 
 func _generateMapper(pkg, basePath, entity, table string) {
-	mapperPath := basePath + "/mapper"
-	mapperImplPath := mapperPath + "/impl"
+	mapperTemplatePath := global.PATH.RESOURCE.TEMPLATE.MAPPER.DIR
+	mapperDir := append([]string{basePath, entity}, global.PATH.MAPPER.DIR...)
+	util.CreateDir(path.Join(mapperDir...))
 
-	util.CreateDir(mapperPath)
-	util.CreateDir(mapperImplPath)
-	// 生成 Mapper 接口
-	mapperFile := mapperPath + "/" + table + "_mapper.go"
-	mapperTemplate := `package mapper
+	interfaceTemplatePath := append(mapperTemplatePath, global.PATH.RESOURCE.TEMPLATE.MAPPER.INTERFACE...)
+	interfacePath := append(mapperDir, global.PATH.MAPPER.INTERFACE...)
 
-type {{.TableName}}Mapper interface {
-	// DEFINE METHODS
-}
-`
-	tmpl := template.Must(template.New("mapper").Parse(mapperTemplate))
-	file, err := os.Create(mapperFile)
-	if err != nil {
-		log.Fatalf("create mapper file failed: %v", err)
-	}
-	defer file.Close()
+	GenerateTemplate(pkg, path.Join(interfaceTemplatePath...), path.Join(interfacePath...), entity, table)
 
-	if err := tmpl.Execute(file, map[string]string{
-		"TableName": util.SnakeToPascal(table),
-	}); err != nil {
-		log.Fatalf("generate mapper failed: %v", err)
-	}
+	implTemplatePath := append(mapperTemplatePath, global.PATH.RESOURCE.TEMPLATE.MAPPER.IMPL...)
+	implPath := append(mapperDir, global.PATH.MAPPER.IMPL...)
 
-	// 生成 MapperImpl
-	mapperImplFile := mapperImplPath + "/" + table + "_mapper_impl.go"
-	mapperImplTemplate := `package impl
-
-import (
-	"{{.pkg}}/section/{{.entity}}/mapper"
-)
-
-type {{.TableName}}MapperImpl struct{}
-
-func New{{.TableName}}MapperImpl() *{{.TableName}}MapperImpl {
-	return &{{.TableName}}MapperImpl{}
-}
-
-var _ mapper.{{.TableName}}Mapper = (*{{.TableName}}MapperImpl)(nil)
-
-// IMPLEMENT METHODS
-`
-	tmpl = template.Must(template.New("mapperImpl").Parse(mapperImplTemplate))
-	file, err = os.Create(mapperImplFile)
-	if err != nil {
-		log.Fatalf("create mapper impl file failed: %v", err)
-	}
-	defer file.Close()
-
-	if err := tmpl.Execute(file, map[string]string{
-		"TableName": util.SnakeToPascal(table),
-		"entity":    entity,
-		"pkg":       pkg,
-	}); err != nil {
-		log.Fatalf("generate mapper impl failed: %v", err)
-	}
+	GenerateTemplate(pkg, path.Join(implTemplatePath...), path.Join(implPath...), entity, table)
 }
