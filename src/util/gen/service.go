@@ -21,15 +21,15 @@ func _generateService(pkg, basePath, entity, table string) {
 	interfaceTemplatePath := append(serviceTemplatePath, global.PATH.RESOURCE.TEMPLATE.SERVICE.INTERFACE...)
 	interfacePath := append(serviceDir, global.PATH.SERVICE.INTERFACE...)
 
-	GenerateTemplate(pkg, path.Join(interfaceTemplatePath...), path.Join(interfacePath...), entity, table)
+	GenerateTemplate(pkg, path.Join(interfaceTemplatePath...), path.Join(interfacePath...), "_service", entity, table)
 
 	builderTemplatePath := append(serviceTemplatePath, global.PATH.RESOURCE.TEMPLATE.SERVICE.BUILDER...)
 	builderPath := append(serviceDir, global.PATH.SERVICE.BUILDER...)
 
-	GenerateTemplate(pkg, path.Join(builderTemplatePath...), path.Join(builderPath...), entity, table)
+	GenerateTemplate(pkg, path.Join(builderTemplatePath...), path.Join(builderPath...), "_service_builder", entity, table)
 
 	implTemplatePath := append(serviceTemplatePath, global.PATH.RESOURCE.TEMPLATE.SERVICE.IMPL...)
 	implPath := append(serviceDir, global.PATH.SERVICE.IMPL...)
 
-	GenerateTemplate(pkg, path.Join(implTemplatePath...), path.Join(implPath...), entity, table)
+	GenerateTemplate(pkg, path.Join(implTemplatePath...), path.Join(implPath...), "_service_impl", entity, table)
 }

@@ -32,7 +32,7 @@ func Generate(pkg string, entities []string) {
 	log.Printf("connect to: %v\n", config.Application.Database.Uri)
 
 	for _, entity := range entities {
-		basePath := "./section/" + entity
+		basePath := "./section/"
 		// 生成 Query
 		generateQuery(basePath, entity, gormDB)
 
@@ -71,7 +71,7 @@ func getEntityTables(db *gorm.DB, entity string) []string {
 
 // generateQuery 生成 Query
 func generateQuery(basePath, entity string, gormDB *gorm.DB) {
-	tmpPath := basePath + "/query"
+	tmpPath :=path.Join(basePath, entity, "query")
 
 	// 创建目录
 	util.CreateDir(tmpPath)
