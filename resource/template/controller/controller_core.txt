@@ -1,0 +1,21 @@
+package core
+
+import (
+	"github.com/gin-gonic/gin"
+	"{{.pkg}}/section/{{.entity}}/service"
+	"net/http"
+)
+
+type {{.TableName}}Controller struct {
+	{{.TableName}}Service service.{{.TableName}}Service
+}
+
+// RegisterRoutes
+func (c *{{.TableName}}Controller) RegisterRoutes(router *gin.Engine) {
+	group := router.Group("/{{.table}}")
+	{
+		group.GET("/hello", func(ctx *gin.Context) {
+			ctx.String(http.StatusOK, "hello {{.table}}")
+		})
+	}
+}

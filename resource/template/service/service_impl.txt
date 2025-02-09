@@ -1,0 +1,18 @@
+package impl
+
+import (
+	"{{.pkg}}/section/{{.entity}}/service"
+	"{{.pkg}}/section/{{.entity}}/mapper"
+)
+
+type {{.TableName}}ServiceImpl struct{
+	{{.TableName}}Mapper mapper.{{.TableName}}Mapper
+}
+
+// IMPLEMENT METHODS
+
+
+
+// INTERFACE
+var _ service.{{.TableName}}Service = (*{{.TableName}}ServiceImpl)(nil)
+

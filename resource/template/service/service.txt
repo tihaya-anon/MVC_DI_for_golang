@@ -1,0 +1,5 @@
+package service
+
+type {{.TableName}}Service interface {
+	// DEFINE METHODS
+}

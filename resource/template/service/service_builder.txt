@@ -1,0 +1,30 @@
+package builder
+
+import (
+	"{{.pkg}}/section/{{.entity}}/service"
+	"{{.pkg}}/section/{{.entity}}/service/impl"
+	"{{.pkg}}/section/{{.entity}}/mapper"
+)
+
+func (b *{{.TableName}}ServiceBuilder) Build() service.{{.TableName}}Service {
+	if b.{{.TableName}}ServiceImpl.{{.TableName}}Mapper == nil {
+		panic("`{{.TableName}}Mapper` is required")
+	}
+	return b.{{.TableName}}ServiceImpl
+}
+
+func (b *{{.TableName}}ServiceBuilder) With{{.TableName}}Mapper(mapper mapper.{{.TableName}}Mapper) *{{.TableName}}ServiceBuilder {
+	b.{{.tableName}}ServiceImpl.{{.TableName}}Mapper = mapper
+	return b
+}
+
+// BUILDER
+type {{.TableName}}ServiceBuilder struct {
+	{{.tableName}}ServiceImpl *core.{{.TableName}}ServiceImpl
+}
+
+func {{.TableName}}ServiceBuilder() *{{.TableName}}ServiceBuilder {
+	return &{{.TableName}}ServiceBuilder{
+		{{.tableName}}ServiceImpl: &core.{{.TableName}}ServiceImpl{},
+	}
+}

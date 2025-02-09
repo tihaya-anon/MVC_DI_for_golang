@@ -1,0 +1,5 @@
+package mapper
+
+type {{.TableName}}Mapper interface {
+	// DEFINE METHODS
+}

@@ -7,8 +7,8 @@ import (
 	"text/template"
 )
 
-// generateService 生成 Service 和 ServiceImpl
-func generateService(pkg, basePath, entity string, tables []string) {
+// GenerateService 生成 Service 和 ServiceImpl
+func GenerateService(pkg, basePath, entity string, tables []string) {
 	for _, table := range tables {
 		_generateService(pkg, basePath, entity, table)
 	}

@@ -1,0 +1,37 @@
+package controller
+
+import (
+  "{{.pkg}}/section/{{.entity}}/service"
+  "{{.pkg}}/section/{{.entity}}/controller/core"
+)
+
+func (b *{{.TableName}}ControllerBuilder) Build() *core.{{.TableName}}Controller {
+  if b.{{.tableName}}Controller.{{.TableName}}Service == nil && b.isStrict {
+    panic("`{{.TableName}}Service` is required")
+  }
+  return b.{{.tableName}}Controller
+}
+
+func (b *{{.TableName}}ControllerBuilder) With{{.TableName}}Service({{.tableName}}Service service.{{.TableName}}Service) *{{.TableName}}ControllerBuilder {
+  b.{{.tableName}}Controller.{{.TableName}}Service = {{.tableName}}Service
+  return b
+}
+
+
+// BUILDER
+type {{.TableName}}ControllerBuilder struct {
+  isStrict bool
+  {{.tableName}}Controller *core.{{.TableName}}Controller
+}
+
+func New{{.TableName}}ControllerBuilder() *{{.TableName}}ControllerBuilder {
+  return &{{.TableName}}ControllerBuilder{
+    isStrict: false,
+    {{.tableName}}Controller: &core.{{.TableName}}Controller{},
+  }
+}
+
+func (b *{{.TableName}}ControllerBuilder) UseStrict() *{{.TableName}}ControllerBuilder { 
+  b.isStrict = true
+  return b
+}

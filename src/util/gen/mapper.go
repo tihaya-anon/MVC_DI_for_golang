@@ -7,8 +7,8 @@ import (
 	"text/template"
 )
 
-// generateMapper 生成 Mapper 和 MapperImpl
-func generateMapper(pkg, basePath, entity string, tables []string) {
+// GenerateMapper 生成 Mapper 和 MapperImpl
+func GenerateMapper(pkg, basePath, entity string, tables []string) {
 	for _, table := range tables {
 		_generateMapper(pkg, basePath, entity, table)
 	}
