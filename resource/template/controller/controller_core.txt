@@ -1,21 +1,21 @@
-package {{.entity}}_controller
+package {{.entity_name}}_controller
 
 import (
 	"github.com/gin-gonic/gin"
-	{{.entity}}_service "{{.pkg}}/section/{{.entity}}/service"
+	{{.entity_name}}_service "{{.pkg}}/section/{{.entity_name}}/service"
 	"net/http"
 )
 
 type {{.TableName}}Controller struct {
-	{{.TableName}}Service {{.entity}}_service.{{.TableName}}Service
+	{{.TableName}}Service {{.entity_name}}_service.{{.TableName}}Service
 }
 
 // RegisterRoutes
 func (c *{{.TableName}}Controller) RegisterRoutes(router *gin.Engine) {
-	group := router.Group("/{{.table}}")
+	group := router.Group("/{{.table_name_hyphen}}")
 	{
 		group.GET("/hello", func(ctx *gin.Context) {
-			ctx.String(http.StatusOK, "hello {{.table}}")
+			ctx.String(http.StatusOK, "hello `{{.table_name_hyphen}}`")
 		})
 	}
 }

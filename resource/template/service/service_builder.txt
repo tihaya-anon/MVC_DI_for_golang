@@ -1,19 +1,19 @@
-package {{.entity}}_service_builder
+package {{.entity_name}}_service_builder
 
 import (
-	{{.entity}}_service "{{.pkg}}/section/{{.entity}}/service"
-	{{.entity}}_service_impl "{{.pkg}}/section/{{.entity}}/service/impl"
-	{{.entity}}_mapper "{{.pkg}}/section/{{.entity}}/mapper"
+	{{.entity_name}}_service "{{.pkg}}/section/{{.entity_name}}/service"
+	{{.entity_name}}_service_impl "{{.pkg}}/section/{{.entity_name}}/service/impl"
+	{{.entity_name}}_mapper "{{.pkg}}/section/{{.entity_name}}/mapper"
 )
 
-func (b *{{.TableName}}ServiceBuilder) Build() {{.entity}}_service.{{.TableName}}Service {
+func (b *{{.TableName}}ServiceBuilder) Build() {{.entity_name}}_service.{{.TableName}}Service {
 	if b.{{.tableName}}ServiceImpl.{{.TableName}}Mapper == nil && b.isStrict {
 		panic("`{{.TableName}}Mapper` is required")
 	}
 	return b.{{.tableName}}ServiceImpl
 }
 
-func (b *{{.TableName}}ServiceBuilder) With{{.TableName}}Mapper(mapper {{.entity}}_mapper.{{.TableName}}Mapper) *{{.TableName}}ServiceBuilder {
+func (b *{{.TableName}}ServiceBuilder) With{{.TableName}}Mapper(mapper {{.entity_name}}_mapper.{{.TableName}}Mapper) *{{.TableName}}ServiceBuilder {
 	b.{{.tableName}}ServiceImpl.{{.TableName}}Mapper = mapper
 	return b
 }
@@ -21,12 +21,12 @@ func (b *{{.TableName}}ServiceBuilder) With{{.TableName}}Mapper(mapper {{.entity
 // BUILDER
 type {{.TableName}}ServiceBuilder struct {
   isStrict bool
-	{{.tableName}}ServiceImpl *{{.entity}}_service_impl.{{.TableName}}ServiceImpl
+	{{.tableName}}ServiceImpl *{{.entity_name}}_service_impl.{{.TableName}}ServiceImpl
 }
 
 func New{{.TableName}}ServiceBuilder() *{{.TableName}}ServiceBuilder {
 	return &{{.TableName}}ServiceBuilder{
-		{{.tableName}}ServiceImpl: &{{.entity}}_service_impl.{{.TableName}}ServiceImpl{},
+		{{.tableName}}ServiceImpl: &{{.entity_name}}_service_impl.{{.TableName}}ServiceImpl{},
 	}
 }
 

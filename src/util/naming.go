@@ -27,3 +27,7 @@ func SnakeToCamel(s string) string {
 	}
 	return strings.Join(parts, "")
 }
+
+func SnakeToHyphen(s string) string {
+	return strings.ReplaceAll(s, "_", "-")
+}

@@ -26,11 +26,12 @@ func GenerateTemplate(pkg, templatePath, targetPath, entity, table string) {
 	defer file.Close()
 
 	if err := tmpl.Execute(file, map[string]interface{}{
-		"entity":    entity,
-		"TableName": util.SnakeToPascal(table),
-		"tableName": util.SnakeToCamel(table),
-		"table":     table,
-		"pkg":       pkg,
+		"entity_name": entity,
+		"TableName":   util.SnakeToPascal(table),
+		"tableName":   util.SnakeToCamel(table),
+		"table_name":  table,
+		"table_name_hyphen":  util.SnakeToHyphen(table),
+		"pkg":         pkg,
 	}); err != nil {
 		log.Fatalf("generate `%v` failed: %v", targetPath, err)
 	}
