@@ -1,11 +1,10 @@
 package main
 
 import (
-	"MVC_DI/config"
-	"MVC_DI/test"
+	"MVC_DI/cmd"
 )
 
 func main() {
-	config.InitConfig()
-	test.TestGen()
+	defer cmd.Stop()
+	cmd.Start()
 }
