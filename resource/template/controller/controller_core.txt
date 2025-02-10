@@ -10,12 +10,6 @@ type {{.TableName}}Controller struct {
 	{{.TableName}}Service {{.entity_name}}_service.{{.TableName}}Service
 }
 
-// RegisterRoutes
-func (c *{{.TableName}}Controller) RegisterRoutes(router *gin.Engine) {
-	group := router.Group("/{{.table_name_hyphen}}")
-	{
-		group.GET("/hello", func(ctx *gin.Context) {
-			ctx.String(http.StatusOK, "hello `{{.table_name_hyphen}}`")
-		})
-	}
+func (c *{{.TableName}}Controller) Hello(ctx *gin.Context) {
+	ctx.String(http.StatusOK, "hello `{{.table_name_hyphen}}`")
 }

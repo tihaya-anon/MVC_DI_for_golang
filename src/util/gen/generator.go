@@ -14,11 +14,11 @@ import (
 	"gorm.io/gorm"
 )
 
-type commonMethod struct {
+type ICommonMethod struct {
 	ID int64
 }
 
-func (commonMethod *commonMethod) BeforeCreate(tx *gorm.DB) error {
+func (commonMethod *ICommonMethod) BeforeCreate(tx *gorm.DB) error {
 	commonMethod.ID = int64(uuid.New().ID())
 	return nil
 }
@@ -111,7 +111,7 @@ func generateQuery(basePath, entity string, gormDB *gorm.DB) {
 	g.ApplyBasic(g.GenerateAllTable(
 		gen.FieldType("id", "int64"),
 		gen.FieldJSONTag("id", "id"),
-		gen.WithMethod(commonMethod{}))...)
+		gen.WithMethod(ICommonMethod{}))...)
 	g.Execute()
 	util.MoveDir(tmpPath, path.Join("database", entity))
 }

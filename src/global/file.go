@@ -7,6 +7,7 @@ var PATH = Path{
 				DIR:     []string{"..", "resource", "template", "controller"},
 				BUILDER: []string{"controller_builder.txt"},
 				CORE:    []string{"controller_core.txt"},
+				ROUTER:  []string{"controller_router.txt"},
 			},
 			MAPPER: Mapper{
 				DIR:       []string{"..", "resource", "template", "mapper"},
@@ -57,6 +58,7 @@ type Controller = struct {
 	DIR     []string
 	BUILDER []string
 	CORE    []string
+	ROUTER  []string
 }
 
 type Mapper = struct {
