@@ -4,9 +4,9 @@ import "MVC_DI/config/model"
 
 var Application = &model.IApplication{}
 
-// # init
+// # InitConfig
 //
-// init is called after all the variable declarations in the
+// InitConfig is called after all the variable declarations in the
 // package have evaluated their initializers, and those are
 // evaluated only after all the imported packages have been
 // loaded. It is used here to read the application configuration
