@@ -1,7 +1,6 @@
 {
   "yaml.schemas": {
-    "schema/application.json": "/application.yaml",
-    "schema/test.json": "/test.yaml"
+    "schema/application.json": "/application.yaml"
   },
   "workbench.colorTheme": "Solarized Light",
   "files.autoSave": "afterDelay",

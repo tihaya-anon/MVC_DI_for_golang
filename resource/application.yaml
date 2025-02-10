@@ -9,3 +9,9 @@ app:
   host: localhost
   port: 8080
   uri: ${.host}:${.port}
+jwt:
+  secret: mysecret
+  expiration:
+    hour: 0
+    minute: 15
+    second: 0

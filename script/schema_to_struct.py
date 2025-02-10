@@ -55,7 +55,7 @@ class StructGenerator:
         definitions = schema.get("definitions", {})
 
         nested_structs = self.__generate_nested_structs(definitions, name)
-        main_struct = self.__generate_go_struct(definitions[name], name)
+        main_struct = self.__generate_go_struct(definitions[name], f"I{name}")
         output = pathlib.Path(output)
         pkg = output.name
         output = output.joinpath(f"{name.lower()}.go")

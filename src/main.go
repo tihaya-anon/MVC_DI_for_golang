@@ -1,10 +1,11 @@
 package main
 
 import (
-	"MVC_DI/cmd"
+	"MVC_DI/config"
+	"MVC_DI/test"
 )
 
 func main() {
-	defer cmd.Stop()
-	cmd.Start()
+	config.InitConfig()
+	test.Test_JWT()
 }
