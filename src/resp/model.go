@@ -2,6 +2,7 @@ package resp
 
 import (
 	"MVC_DI/global/enum"
+	"MVC_DI/util/stream"
 )
 
 type IResponse struct {
@@ -47,4 +48,17 @@ func (r *IResponse) CustomerError(error error) *IResponse {
 
 func (r *IResponse) ThirdPartyError(error error) *IResponse {
 	return r.Error(enum.CODE.THIRD_PARTY_ERROR, error)
+}
+
+func (r *IResponse) ValidationError(errorMap map[string]error) *IResponse {
+	r.Code = enum.CODE.VALIDATION_ERROR
+	r.Msg = enum.MSG.VALIDATION_ERROR
+	r.Data = stream.NewMapStream(errorMap).
+		Map(
+			func(key string, val error) (string, any) {
+				return key, val.Error()
+			},
+		).
+		ToMap()
+	return r
 }

@@ -4,6 +4,7 @@ var MSG = struct {
 	SUCCESS string
 
 	CUSTOMER_ERROR string
+	VALIDATION_ERROR string
 
 	SYSTEM_ERROR string
 
@@ -12,6 +13,7 @@ var MSG = struct {
 	SUCCESS: "Success",
 
 	CUSTOMER_ERROR: "Customer Error",
+	VALIDATION_ERROR: "Validation Error",
 
 	SYSTEM_ERROR: "System Error",
 
