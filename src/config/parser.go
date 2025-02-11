@@ -17,7 +17,7 @@ import (
 // Parse Loads a config file into a struct
 func Parse[T any](file string, definition *T) error {
 	pathStr, fileStr := path.Split(file)
-	pathStr = path.Join("..", "resource", pathStr)
+	pathStr = path.Join("..", "..", "resource", pathStr)
 	splitFile := strings.Split(fileStr, ".")
 
 	name := splitFile[0]
