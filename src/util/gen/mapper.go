@@ -2,6 +2,7 @@ package gen
 
 import (
 	"MVC_DI/global"
+	"MVC_DI/global/module"
 	"MVC_DI/util"
 	"path"
 )
@@ -17,7 +18,7 @@ func GenerateMapper(pkg, basePath, entity string, tables []string) {
 
 func _generateMapper(pkg, basePath, entity, table string) {
 	mapperTemplatePath := global.PATH.RESOURCE.TEMPLATE.MAPPER.DIR
-	mapperDir := append([]string{basePath, entity}, global.PATH.MAPPER.DIR...)
+	mapperDir := append([]string{module.GetRoot(), basePath, entity}, global.PATH.MAPPER.DIR...)
 	util.CreateDir(path.Join(mapperDir...))
 
 	interfaceTemplatePath := append(mapperTemplatePath, global.PATH.RESOURCE.TEMPLATE.MAPPER.INTERFACE...)

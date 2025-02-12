@@ -1,10 +1,12 @@
 package gen
 
 import (
+	"MVC_DI/global/module"
 	"MVC_DI/util"
 	"log"
 	"os"
 	"path"
+	"path/filepath"
 	"text/template"
 )
 
@@ -26,6 +28,7 @@ import (
 // The generated file will be saved in the given targetPath with the name
 // {table_name}{targetFilePostfix}.go
 func GenerateTemplate(pkg, templatePath, targetPath, targetFilePostfix, entity, table string) {
+	templatePath = path.Join(filepath.Dir(module.GetRoot()), templatePath)
 	templateFile, err := os.ReadFile(templatePath)
 	if err != nil {
 		log.Fatalf("read `%v` failed: %v", templatePath, err)

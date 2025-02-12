@@ -2,6 +2,7 @@ package gen
 
 import (
 	"MVC_DI/config"
+	"MVC_DI/global/module"
 	"MVC_DI/util"
 	"log"
 	"path"
@@ -34,30 +35,28 @@ func Generate(pkg string, entities []string) {
 		log.Fatalf("connect to database failed: %v", err)
 	}
 	log.Printf("connect to: %v\n", config.Application.Database.Uri)
-
+	//  generate query
+	GenerateQuery(entities, gormDB)
 	for _, entity := range entities {
 		basePath := "./section/"
-
-		//  generate query
-		generateQuery(basePath, entity, gormDB)
 
 		// get all tables for the current entity
 		tables := getEntityTables(gormDB, entity)
 
-		//  generate service and service impl
-		GenerateService(pkg, basePath, entity, tables)
-
 		//  generate mapper and mapper impl
 		GenerateMapper(pkg, basePath, entity, tables)
+
+		//  generate service and service impl
+		GenerateService(pkg, basePath, entity, tables)
 
 		//  generate gin controller
 		GenerateGinController(pkg, basePath, entity, tables)
 	}
 }
 
-// # getEntityTables 
+// # getEntityTables
 //
-//returns all tables for the given entity
+// returns all tables for the given entity
 func getEntityTables(db *gorm.DB, entity string) []string {
 	// execute SHOW TABLES LIKE 'entity%' to get all tables
 	// that start with the given entity
@@ -80,14 +79,14 @@ func getEntityTables(db *gorm.DB, entity string) []string {
 	return tables
 }
 
-// # generateQuery
+// # GenerateQuery
 //
 // generate Query for the given entity
 //
 // This function generates query code for the given entity. The code is generated
 // in a temporary directory and then moved to the final location.
-func generateQuery(basePath, entity string, gormDB *gorm.DB) {
-	tmpPath := path.Join(basePath, entity, "query")
+func GenerateQuery(entityList []string, gormDB *gorm.DB) {
+	tmpPath := path.Join(module.GetRoot(), "tmp", "query")
 
 	// create the directory
 	util.CreateDir(tmpPath)
@@ -101,8 +100,10 @@ func generateQuery(basePath, entity string, gormDB *gorm.DB) {
 
 	// generate Query code
 	g.WithTableNameStrategy(func(tableName string) (targetTableName string) {
-		if strings.HasPrefix(tableName, entity) {
-			return tableName
+		for _, entity := range entityList {
+			if strings.HasPrefix(tableName, entity) {
+				return tableName
+			}
 		}
 		return ""
 	})
@@ -113,5 +114,4 @@ func generateQuery(basePath, entity string, gormDB *gorm.DB) {
 		gen.FieldJSONTag("id", "id"),
 		gen.WithMethod(ICommonMethod{}))...)
 	g.Execute()
-	util.MoveDir(tmpPath, path.Join("database", entity))
 }

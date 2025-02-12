@@ -2,6 +2,7 @@ package gen
 
 import (
 	"MVC_DI/global"
+	"MVC_DI/global/module"
 	"MVC_DI/util"
 	"path"
 )
@@ -17,7 +18,7 @@ func GenerateService(pkg, basePath, entity string, tables []string) {
 
 func _generateService(pkg, basePath, entity, table string) {
 	serviceTemplatePath := global.PATH.RESOURCE.TEMPLATE.SERVICE.DIR
-	serviceDir := append([]string{basePath, entity}, global.PATH.SERVICE.DIR...)
+	serviceDir := append([]string{module.GetRoot(), basePath, entity}, global.PATH.SERVICE.DIR...)
 	util.CreateDir(path.Join(serviceDir...))
 
 	interfaceTemplatePath := append(serviceTemplatePath, global.PATH.RESOURCE.TEMPLATE.SERVICE.INTERFACE...)

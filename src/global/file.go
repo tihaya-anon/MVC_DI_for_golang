@@ -4,18 +4,18 @@ var PATH = Path{
 	RESOURCE: Resource{
 		TEMPLATE: Template{
 			CONTROLLER: Controller{
-				DIR:     []string{"..", "resource", "template", "controller"},
+				DIR:     []string{"resource", "template", "controller"},
 				BUILDER: []string{"controller_builder.txt"},
 				CORE:    []string{"controller_core.txt"},
 				ROUTER:  []string{"controller_router.txt"},
 			},
 			MAPPER: Mapper{
-				DIR:       []string{"..", "resource", "template", "mapper"},
+				DIR:       []string{"resource", "template", "mapper"},
 				INTERFACE: []string{"mapper.txt"},
 				IMPL:      []string{"mapper_impl.txt"},
 			},
 			SERVICE: Service{
-				DIR:       []string{"..", "resource", "template", "service"},
+				DIR:       []string{"resource", "template", "service"},
 				INTERFACE: []string{"service_interface.txt"},
 				BUILDER:   []string{"service_builder.txt"},
 				IMPL:      []string{"service_impl.txt"},
