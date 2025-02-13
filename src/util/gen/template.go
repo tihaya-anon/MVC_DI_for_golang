@@ -47,6 +47,7 @@ func GenerateTemplate(pkg, templatePath, targetPath, targetFilePostfix, entity, 
 
 	if err := tmpl.Execute(file, map[string]interface{}{
 		"entity_name":       entity,
+		"EntityName":        util.SnakeToPascal(entity),
 		"TableName":         util.SnakeToPascal(table),
 		"tableName":         util.SnakeToCamel(table),
 		"table_name":        table,

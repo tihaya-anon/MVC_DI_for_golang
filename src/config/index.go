@@ -1,8 +1,8 @@
 package config
 
-import "MVC_DI/config/model"
+import config_model "MVC_DI/config/model"
 
-var Application = &model.IApplication{}
+var Application = &config_model.IApplication{}
 
 // # InitConfig
 //

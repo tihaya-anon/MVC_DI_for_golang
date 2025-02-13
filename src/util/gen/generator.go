@@ -3,7 +3,6 @@ package gen
 import (
 	"MVC_DI/config"
 	"MVC_DI/global/module"
-	"MVC_DI/util"
 	"log"
 	"path"
 	"strings"
@@ -35,10 +34,10 @@ func Generate(pkg string, entities []string) {
 		log.Fatalf("connect to database failed: %v", err)
 	}
 	log.Printf("connect to: %v\n", config.Application.Database.Uri)
+	basePath := "./section/"
 	//  generate query
 	GenerateQuery(entities, gormDB)
 	for _, entity := range entities {
-		basePath := "./section/"
 
 		// get all tables for the current entity
 		tables := getEntityTables(gormDB, entity)
@@ -86,14 +85,10 @@ func getEntityTables(db *gorm.DB, entity string) []string {
 // This function generates query code for the given entity. The code is generated
 // in a temporary directory and then moved to the final location.
 func GenerateQuery(entityList []string, gormDB *gorm.DB) {
-	tmpPath := path.Join(module.GetRoot(), "tmp", "database")
-
-	// create the directory
-	util.CreateDir(tmpPath)
 
 	// initialize the generator
 	g := gen.NewGenerator(gen.Config{
-		OutPath: tmpPath,
+		OutPath: path.Join(module.GetRoot(), "database"),
 		Mode:    gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface,
 	})
 	g.UseDB(gormDB)
@@ -114,4 +109,5 @@ func GenerateQuery(entityList []string, gormDB *gorm.DB) {
 		gen.FieldJSONTag("id", "id"),
 		gen.WithMethod(ICommonMethod{}))...)
 	g.Execute()
+
 }
