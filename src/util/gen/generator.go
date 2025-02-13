@@ -86,7 +86,7 @@ func getEntityTables(db *gorm.DB, entity string) []string {
 // This function generates query code for the given entity. The code is generated
 // in a temporary directory and then moved to the final location.
 func GenerateQuery(entityList []string, gormDB *gorm.DB) {
-	tmpPath := path.Join(module.GetRoot(), "tmp", "query")
+	tmpPath := path.Join(module.GetRoot(), "tmp", "database")
 
 	// create the directory
 	util.CreateDir(tmpPath)

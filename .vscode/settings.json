@@ -70,5 +70,5 @@
   "editor.wordWrap": "on",
   "workbench.iconTheme": "material-icon-theme",
   "indentRainbow.excludedLanguages": ["java", "plaintext", "go"],
-  "conventionalCommits.scopes": ["post", "user", "template"]
+  "conventionalCommits.scopes": ["post", "user", "template", "generator"]
 }
