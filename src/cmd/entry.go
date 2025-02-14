@@ -1,15 +1,27 @@
 package cmd
 
 import (
+	test_router "MVC_DI/router/test"
+	test_controller_builder "MVC_DI/section/test/controller/builder"
 	"MVC_DI/server"
 	"context"
 	"fmt"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
+type ProxyImpl struct{}
+
+func (impl *ProxyImpl) Before(ctx *gin.Context) { fmt.Println("Before") }
+func (impl *ProxyImpl) After(ctx *gin.Context)  { fmt.Println("After") }
+
 func bindController() {
+	controller := test_controller_builder.NewTestAControllerBuilder().WithProxy(&ProxyImpl{}).Build()
+	// controller := test_controller_builder.NewTestAControllerBuilder().Build()
+	test_router.BindTestAController(controller)
 }
 
 func startServer(publicPath, authPath string, timeOut time.Duration) {
