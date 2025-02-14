@@ -1,9 +1,6 @@
 package cmd
 
 import (
-	"MVC_DI/config"
-	user_router "MVC_DI/router/user"
-	user_controller_builder "MVC_DI/section/user/controller/builder"
 	"MVC_DI/server"
 	"context"
 	"fmt"
@@ -13,11 +10,6 @@ import (
 )
 
 func bindController() {
-	userEntryController := user_controller_builder.NewUserEntryControllerBuilder().Build()
-	user_router.BindUserEntryController(userEntryController)
-
-	userAuthController := user_controller_builder.NewUserAuthControllerBuilder().Build()
-	user_router.BindUserAuthController(userAuthController)
 }
 
 func startServer(publicPath, authPath string, timeOut time.Duration) {
@@ -34,7 +26,6 @@ func startServer(publicPath, authPath string, timeOut time.Duration) {
 }
 
 func Start() {
-	config.InitConfig()
 	bindController()
 	startServer("/api/v1/public", "/api/v1", 5*time.Second)
 }

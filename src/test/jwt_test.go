@@ -1,13 +1,11 @@
 package test
 
 import (
-	"MVC_DI/config"
 	"MVC_DI/security"
 	"testing"
 )
 
 func Test_JWT(t *testing.T) {
-	config.InitConfig()
 	// Case 1: Generate JWT
 	// Given
 	type Claims struct {

@@ -9,10 +9,5 @@ type {{.TableName}}ServiceImpl struct{
 	{{.TableName}}Mapper {{.entity_name}}_mapper.{{.TableName}}Mapper
 }
 
-// IMPLEMENT METHODS
-
-
-
 // INTERFACE
 var _ {{.entity_name}}_service.{{.TableName}}Service = (*{{.TableName}}ServiceImpl)(nil)
-
