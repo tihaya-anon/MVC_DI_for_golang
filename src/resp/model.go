@@ -14,58 +14,58 @@ type IResponse struct {
 func NewResponse() *IResponse {
 	return &IResponse{}
 }
-func (r *IResponse) Success() *IResponse {
-	r.Code = enum.CODE.SUCCESS
-	r.Msg = enum.MSG.SUCCESS
-	return r
+func (response *IResponse) Success() *IResponse {
+	response.Code = enum.CODE.SUCCESS
+	response.Msg = enum.MSG.SUCCESS
+	return response
 }
 
-func (r *IResponse) SuccessWithData(data any) *IResponse {
-	r = r.Success()
-	r.Data = data
-	return r
+func (response *IResponse) SuccessWithData(data any) *IResponse {
+	response = response.Success()
+	response.Data = data
+	return response
 }
 
-func (r *IResponse) Error(code string, error error) *IResponse {
+func (response *IResponse) Error(code string, error error) *IResponse {
 	var msg string
 	if error != nil {
 		msg = error.Error()
 	} else {
 		msg = enum.MSG.SYSTEM_ERROR
 	}
-	r.Code = code
-	r.Msg = msg
-	return r
+	response.Code = code
+	response.Msg = msg
+	return response
 }
 
-func (r *IResponse) SystemError(error error) *IResponse {
-	return r.Error(enum.CODE.SYSTEM_ERROR, error)
+func (response *IResponse) SystemError(error error) *IResponse {
+	return response.Error(enum.CODE.SYSTEM_ERROR, error)
 }
 
-func (r *IResponse) CustomerError(error error) *IResponse {
-	return r.Error(enum.CODE.CUSTOMER_ERROR, error)
+func (response *IResponse) CustomerError(error error) *IResponse {
+	return response.Error(enum.CODE.CUSTOMER_ERROR, error)
 }
 
-func (r *IResponse) ThirdPartyError(error error) *IResponse {
-	return r.Error(enum.CODE.THIRD_PARTY_ERROR, error)
+func (response *IResponse) ThirdPartyError(error error) *IResponse {
+	return response.Error(enum.CODE.THIRD_PARTY_ERROR, error)
 }
 
-func (r *IResponse) ValidationError(errorMap map[string]error) *IResponse {
-	r.Code = enum.CODE.VALIDATION_ERROR
-	r.Msg = enum.MSG.VALIDATION_ERROR
-	r.Data = stream.NewMapStream(errorMap).
+func (response *IResponse) ValidationError(errorMap map[string]error) *IResponse {
+	response.Code = enum.CODE.VALIDATION_ERROR
+	response.Msg = enum.MSG.VALIDATION_ERROR
+	response.Data = stream.NewMapStream(errorMap).
 		Map(
 			func(key string, val error) (string, any) {
 				return key, val.Error()
 			},
 		).
 		ToMap()
-	return r
+	return response
 }
 
-func (r *IResponse) AllArgsConstructor(code string, msg string, data any) *IResponse {
-	r.Code = code
-	r.Msg = msg
-	r.Data = data
-	return r
+func (response *IResponse) AllArgsConstructor(code string, msg string, data any) *IResponse {
+	response.Code = code
+	response.Msg = msg
+	response.Data = data
+	return response
 }

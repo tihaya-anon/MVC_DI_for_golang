@@ -5,16 +5,16 @@ import (
   {{.entity_name}}_controller "{{.pkg}}/section/{{.entity_name}}/controller"
 )
 
-func (b *{{.TableName}}ControllerBuilder) Build() *{{.entity_name}}_controller.{{.TableName}}Controller {
-  if b.{{.tableName}}Controller.{{.TableName}}Service == nil && b.isStrict {
+func (builder *{{.TableName}}ControllerBuilder) Build() *{{.entity_name}}_controller.{{.TableName}}Controller {
+  if builder.{{.tableName}}Controller.{{.TableName}}Service == nil && builder.isStrict {
     panic("`{{.TableName}}Service` is required")
   }
-  return b.{{.tableName}}Controller
+  return builder.{{.tableName}}Controller
 }
 
-func (b *{{.TableName}}ControllerBuilder) With{{.TableName}}Service({{.tableName}}Service {{.entity_name}}_service.{{.TableName}}Service) *{{.TableName}}ControllerBuilder {
-  b.{{.tableName}}Controller.{{.TableName}}Service = {{.tableName}}Service
-  return b
+func (builder *{{.TableName}}ControllerBuilder) With{{.TableName}}Service({{.tableName}}Service {{.entity_name}}_service.{{.TableName}}Service) *{{.TableName}}ControllerBuilder {
+  builder.{{.tableName}}Controller.{{.TableName}}Service = {{.tableName}}Service
+  return builder
 }
 
 
@@ -31,7 +31,7 @@ func New{{.TableName}}ControllerBuilder() *{{.TableName}}ControllerBuilder {
   }
 }
 
-func (b *{{.TableName}}ControllerBuilder) UseStrict() *{{.TableName}}ControllerBuilder { 
-  b.isStrict = true
-  return b
+func (builder *{{.TableName}}ControllerBuilder) UseStrict() *{{.TableName}}ControllerBuilder { 
+  builder.isStrict = true
+  return builder
 }

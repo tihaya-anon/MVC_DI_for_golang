@@ -6,16 +6,16 @@ import (
 	{{.entity_name}}_mapper "{{.pkg}}/section/{{.entity_name}}/mapper"
 )
 
-func (b *{{.TableName}}ServiceBuilder) Build() {{.entity_name}}_service.{{.TableName}}Service {
-	if b.{{.tableName}}ServiceImpl.{{.TableName}}Mapper == nil && b.isStrict {
+func (builder *{{.TableName}}ServiceBuilder) Build() {{.entity_name}}_service.{{.TableName}}Service {
+	if builder.{{.tableName}}ServiceImpl.{{.TableName}}Mapper == nil && builder.isStrict {
 		panic("`{{.TableName}}Mapper` is required")
 	}
-	return b.{{.tableName}}ServiceImpl
+	return builder.{{.tableName}}ServiceImpl
 }
 
-func (b *{{.TableName}}ServiceBuilder) With{{.TableName}}Mapper(mapper {{.entity_name}}_mapper.{{.TableName}}Mapper) *{{.TableName}}ServiceBuilder {
-	b.{{.tableName}}ServiceImpl.{{.TableName}}Mapper = mapper
-	return b
+func (builder *{{.TableName}}ServiceBuilder) With{{.TableName}}Mapper(mapper {{.entity_name}}_mapper.{{.TableName}}Mapper) *{{.TableName}}ServiceBuilder {
+	builder.{{.tableName}}ServiceImpl.{{.TableName}}Mapper = mapper
+	return builder
 }
 
 // BUILDER
@@ -30,7 +30,7 @@ func New{{.TableName}}ServiceBuilder() *{{.TableName}}ServiceBuilder {
 	}
 }
 
-func (b *{{.TableName}}ServiceBuilder) UseStrict() *{{.TableName}}ServiceBuilder { 
-  b.isStrict = true
-  return b
+func (builder *{{.TableName}}ServiceBuilder) UseStrict() *{{.TableName}}ServiceBuilder { 
+  builder.isStrict = true
+  return builder
 }

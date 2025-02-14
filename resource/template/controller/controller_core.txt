@@ -10,6 +10,6 @@ type {{.TableName}}Controller struct {
 	{{.TableName}}Service {{.entity_name}}_service.{{.TableName}}Service
 }
 
-func (c *{{.TableName}}Controller) Hello(ctx *gin.Context) *resp.IResponse {
+func (ctrl *{{.TableName}}Controller) Hello(ctx *gin.Context) *resp.IResponse {
 	return resp.NewResponse().SuccessWithData("hello `{{.table_name_hyphen}}`")
 }

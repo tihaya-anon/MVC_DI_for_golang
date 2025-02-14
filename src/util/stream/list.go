@@ -13,22 +13,22 @@ func NewListStream[T any](items []T) IListStream[T] {
 	return ch
 }
 
-func (s IListStream[T]) Map(fn func(T) any) IListStream[any] {
+func (strm IListStream[T]) Map(fn func(T) any) IListStream[any] {
 	out := make(chan any)
 	go func() {
 		defer close(out)
-		for item := range s {
+		for item := range strm {
 			out <- fn(item)
 		}
 	}()
 	return out
 }
 
-func (s IListStream[T]) Filter(fn func(T) bool) IListStream[T] {
+func (strm IListStream[T]) Filter(fn func(T) bool) IListStream[T] {
 	out := make(chan T)
 	go func() {
 		defer close(out)
-		for item := range s {
+		for item := range strm {
 			if fn(item) {
 				out <- item
 			}
@@ -37,9 +37,9 @@ func (s IListStream[T]) Filter(fn func(T) bool) IListStream[T] {
 	return out
 }
 
-func (s IListStream[T]) ToList() []T {
+func (strm IListStream[T]) ToList() []T {
 	out := make([]T, 0)
-	for item := range s {
+	for item := range strm {
 		out = append(out, item)
 	}
 	return out
