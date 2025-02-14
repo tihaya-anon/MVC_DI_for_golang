@@ -2,7 +2,6 @@ package router
 
 import (
 	"MVC_DI/config"
-	"MVC_DI/resp"
 	"context"
 	"fmt"
 	"net/http"
@@ -22,12 +21,6 @@ func RegisterRouter(fn IRegisterRouterFunc) {
 		return
 	}
 	registerRouterFuncList = append(registerRouterFuncList, fn)
-}
-
-func ResponseWrapper(fn func(ctx *gin.Context) *resp.IResponse) func(ctx *gin.Context) {
-	return func(ctx *gin.Context) {
-		ctx.AbortWithStatusJSON(http.StatusOK, fn(ctx))
-	}
 }
 
 // # InitRouter

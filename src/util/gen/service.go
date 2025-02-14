@@ -18,7 +18,7 @@ func GenerateService(pkg, basePath, entity string, tables []string) {
 
 func _generateService(pkg, basePath, entity, table string) {
 	serviceTemplatePath := global.PATH.RESOURCE.TEMPLATE.SERVICE.DIR
-	serviceDir := append([]string{module.GetRoot(), basePath, entity}, global.PATH.SERVICE.DIR...)
+	serviceDir := append([]string{module.GetSrc(), basePath, entity}, global.PATH.SERVICE.DIR...)
 	util.CreateDir(path.Join(serviceDir...))
 
 	interfaceTemplatePath := append(serviceTemplatePath, global.PATH.RESOURCE.TEMPLATE.SERVICE.INTERFACE...)

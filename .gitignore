@@ -1,3 +1,5 @@
 /build/
 /.idea/
 **/*/tmp/
+/src/section/
+/src/router/*/

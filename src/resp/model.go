@@ -62,3 +62,10 @@ func (r *IResponse) ValidationError(errorMap map[string]error) *IResponse {
 		ToMap()
 	return r
 }
+
+func (r *IResponse) AllArgsConstructor(code string, msg string, data any) *IResponse {
+	r.Code = code
+	r.Msg = msg
+	r.Data = data
+	return r
+}

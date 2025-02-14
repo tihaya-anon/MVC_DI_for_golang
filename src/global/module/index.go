@@ -34,6 +34,10 @@ func findGoModDir() (string, error) {
 	return "", fmt.Errorf("go.mod not found")
 }
 
-func GetRoot() string {
+func GetSrc() string {
 	return moduleRoot
+}
+
+func GetRoot() string {
+	return filepath.Dir(moduleRoot)
 }

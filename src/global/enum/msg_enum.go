@@ -3,8 +3,10 @@ package enum
 var MSG = struct {
 	SUCCESS string
 
-	CUSTOMER_ERROR string
+	CUSTOMER_ERROR   string
 	VALIDATION_ERROR string
+	MISSING_TOKEN    string
+	INVALID_TOKEN    string
 
 	SYSTEM_ERROR string
 
@@ -12,8 +14,10 @@ var MSG = struct {
 }{
 	SUCCESS: "Success",
 
-	CUSTOMER_ERROR: "Customer Error",
+	CUSTOMER_ERROR:   "Customer Error",
 	VALIDATION_ERROR: "Validation Error",
+	MISSING_TOKEN:    "Must Provide Token",
+	INVALID_TOKEN:    "Invalid Token",
 
 	SYSTEM_ERROR: "System Error",
 

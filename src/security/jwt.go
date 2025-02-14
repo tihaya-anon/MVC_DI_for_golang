@@ -3,7 +3,6 @@ package security
 import (
 	"MVC_DI/config"
 	"MVC_DI/util"
-	"fmt"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -35,7 +34,6 @@ func ParseJWT[T any](tokenString string) (T, error) {
 	if token.Valid {
 		return claims.Claims, nil
 	}
-	fmt.Printf("invalid token: %v\n", err)
 	return claims.Claims, err
 }
 

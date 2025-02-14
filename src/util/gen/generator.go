@@ -88,7 +88,7 @@ func GenerateQuery(entityList []string, gormDB *gorm.DB) {
 
 	// initialize the generator
 	g := gen.NewGenerator(gen.Config{
-		OutPath: path.Join(module.GetRoot(), "database"),
+		OutPath: path.Join(module.GetSrc(), "database"),
 		Mode:    gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface,
 	})
 	g.UseDB(gormDB)

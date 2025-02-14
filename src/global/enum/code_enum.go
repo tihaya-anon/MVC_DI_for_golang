@@ -5,6 +5,8 @@ var CODE = struct {
 
 	CUSTOMER_ERROR   string
 	VALIDATION_ERROR string
+	MISSING_TOKEN string
+	INVALID_TOKEN string
 
 	SYSTEM_ERROR string
 
@@ -14,6 +16,8 @@ var CODE = struct {
 
 	CUSTOMER_ERROR:   "C0000",
 	VALIDATION_ERROR: "C0001",
+	MISSING_TOKEN: "C0002",
+	INVALID_TOKEN: "C0003",
 
 	SYSTEM_ERROR: "S0000",
 

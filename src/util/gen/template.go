@@ -28,7 +28,7 @@ import (
 // The generated file will be saved in the given targetPath with the name
 // {table_name}{targetFilePostfix}.go
 func GenerateTemplate(pkg, templatePath, targetPath, targetFilePostfix, entity, table string) {
-	templatePath = path.Join(filepath.Dir(module.GetRoot()), templatePath)
+	templatePath = path.Join(filepath.Dir(module.GetSrc()), templatePath)
 	templateFile, err := os.ReadFile(templatePath)
 	if err != nil {
 		log.Fatalf("read `%v` failed: %v", templatePath, err)
