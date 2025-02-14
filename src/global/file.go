@@ -8,10 +8,11 @@ var PATH = Path{
 				BUILDER: []string{"controller_builder.txt"},
 				CORE:    []string{"controller_core.txt"},
 				ROUTER:  []string{"controller_router.txt"},
+				TEST:    []string{"controller_test.txt"},
 			},
 			MAPPER: Mapper{
 				DIR:       []string{"resource", "template", "mapper"},
-				INTERFACE: []string{"mapper.txt"},
+				INTERFACE: []string{"mapper_interface.txt"},
 				IMPL:      []string{"mapper_impl.txt"},
 			},
 			SERVICE: Service{
@@ -19,12 +20,14 @@ var PATH = Path{
 				INTERFACE: []string{"service_interface.txt"},
 				BUILDER:   []string{"service_builder.txt"},
 				IMPL:      []string{"service_impl.txt"},
+				TEST:      []string{"service_test.txt"},
 			},
 		},
 	},
 	CONTROLLER: Controller{
 		BUILDER: []string{"controller", "builder"},
 		CORE:    []string{"controller"},
+		TEST:    []string{"controller", "test"},
 	},
 	MAPPER: Mapper{
 		INTERFACE: []string{"mapper"},
@@ -34,6 +37,7 @@ var PATH = Path{
 		INTERFACE: []string{"service"},
 		BUILDER:   []string{"service", "builder"},
 		IMPL:      []string{"service", "impl"},
+		TEST:      []string{"service", "test"},
 	},
 }
 
@@ -59,6 +63,7 @@ type Controller = struct {
 	BUILDER []string
 	CORE    []string
 	ROUTER  []string
+	TEST    []string
 }
 
 type Mapper = struct {
@@ -72,4 +77,5 @@ type Service = struct {
 	BUILDER   []string
 	INTERFACE []string
 	IMPL      []string
+	TEST      []string
 }

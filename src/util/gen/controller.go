@@ -42,6 +42,11 @@ func _generateGinController(pkg, basePath, entity, table string) {
 	builderPath := append(controllerDir, global.PATH.CONTROLLER.BUILDER...)
 	GenerateTemplate(pkg, path.Join(builderTemplatePath...), path.Join(builderPath...), "_controller_builder", entity, table)
 
+	// Generate the test controller file
+	testTemplatePath := append(controllerTemplatePath, global.PATH.RESOURCE.TEMPLATE.CONTROLLER.TEST...)
+	testPath := append(controllerDir, global.PATH.CONTROLLER.TEST...)
+	GenerateTemplate(pkg, path.Join(testTemplatePath...), path.Join(testPath...), "_controller_test", entity, table)
+
 	// Generate the router controller file
 	routerTemplatePath := append(controllerTemplatePath, global.PATH.RESOURCE.TEMPLATE.CONTROLLER.ROUTER...)
 	GenerateTemplate(pkg, path.Join(routerTemplatePath...), path.Join(module.GetSrc(), "router", entity), "_router", entity, table)

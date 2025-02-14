@@ -21,6 +21,12 @@ func Test_GenQuery(t *testing.T) {
 	}
 	gen.GenerateQuery([]string{"user"}, gormDB)
 }
+
+func Test_MVC(t *testing.T) {
+	Test_GenController(t)
+	Test_GenService(t)
+	Test_GenMapper(t)
+}
 func Test_GenController(t *testing.T) {
 	gen.GenerateGinController("MVC_DI", "section", "user", []string{"user_auth", "user_entry"})
 }
