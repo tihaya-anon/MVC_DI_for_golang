@@ -2,7 +2,7 @@ package resp
 
 import (
 	"MVC_DI/global/enum"
-	"MVC_DI/util/stream"
+	"MVC_DI/vo/resp/common"
 )
 
 type TResponse struct {
@@ -50,16 +50,10 @@ func (response *TResponse) ThirdPartyError(error error) *TResponse {
 	return response.Error(enum.CODE.THIRD_PARTY_ERROR, error)
 }
 
-func (response *TResponse) ValidationError(errorMap map[string]error) *TResponse {
+func (response *TResponse) ValidationError(error *common.ValidationError) *TResponse {
 	response.Code = enum.CODE.VALIDATION_ERROR
 	response.Msg = enum.MSG.VALIDATION_ERROR
-	response.Data = stream.NewMapStream(errorMap).
-		Map(
-			func(key string, val error) (string, any) {
-				return key, val.Error()
-			},
-		).
-		ToMap()
+	response.Data = &error
 	return response
 }
 
