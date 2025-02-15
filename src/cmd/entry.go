@@ -24,12 +24,12 @@ func bindController() {
 	test_router.BindTestAController(controller)
 }
 
-func startServer(publicPath, authPath string, timeOut time.Duration) {
+func startServer(publicPath, authPath string, engine *gin.Engine, timeOut time.Duration) {
 	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer cancel()
 
 	server := server.NewServer()
-	server.Setup(publicPath, authPath)
+	server.Setup(publicPath, authPath, engine)
 	server.Run()
 
 	<-ctx.Done()
@@ -39,7 +39,7 @@ func startServer(publicPath, authPath string, timeOut time.Duration) {
 
 func Start() {
 	bindController()
-	startServer("/api/v1/public", "/api/v1", 5*time.Second)
+	startServer("/api/v1/public", "/api/v1/auth", gin.Default(), 5*time.Second)
 }
 
 func Stop() {

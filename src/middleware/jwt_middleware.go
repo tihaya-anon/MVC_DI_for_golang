@@ -17,11 +17,19 @@ func JwtMiddleware() gin.HandlerFunc {
 			resp.ResponseWrapper(ctx, response.AllArgsConstructor(enum.CODE.MISSING_TOKEN, enum.MSG.MISSING_TOKEN, nil))
 			return
 		}
-		token = strings.Split(token, " ")[1]
-		if !security.CheckJWT(token) {
+		isLegal, token := extractToken(token)
+		if !isLegal || !security.CheckJWT(token) {
 			resp.ResponseWrapper(ctx, response.AllArgsConstructor(enum.CODE.INVALID_TOKEN, enum.MSG.INVALID_TOKEN, nil))
 			return
 		}
 		ctx.Next()
 	}
+}
+
+func extractToken(token string) (bool, string) {
+	isLegal := strings.HasPrefix(token, "Bearer ") && len(strings.Split(token, " ")) == 2
+	if isLegal {
+		return true, strings.Split(token, " ")[1]
+	}
+	return false, ""
 }

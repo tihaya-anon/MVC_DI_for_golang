@@ -2,6 +2,7 @@ package server
 
 import (
 	"MVC_DI/config"
+	"MVC_DI/middleware"
 	"MVC_DI/router"
 	"context"
 	"fmt"
@@ -19,11 +20,10 @@ func NewServer() *Server {
 	return &Server{}
 }
 
-func (s *Server) Setup(publicPath, authPath string) {
-	engine := gin.Default()
-
+func (s *Server) Setup(publicPath, authPath string, engine *gin.Engine) {
 	publicRouterGroup := engine.Group(publicPath)
 	authRouterGroup := engine.Group(authPath)
+	authRouterGroup.Use(middleware.JwtMiddleware())
 
 	for _, registerRouterFunc := range router.RegisterRouterFuncList {
 		registerRouterFunc(publicRouterGroup, authRouterGroup)
