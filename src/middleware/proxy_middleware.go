@@ -17,8 +17,8 @@ func (middleware *ProxyMiddleware) ProxyVoid(ctx *gin.Context, fn func()) {
 		return
 	}
 	middleware.Proxy.Before(ctx)
+	defer middleware.Proxy.After(ctx)
 	fn()
-	middleware.Proxy.After(ctx)
 }
 
 func (middleware *ProxyMiddleware) ProxyReturn(ctx *gin.Context, fn func() any) any {

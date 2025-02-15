@@ -7,12 +7,8 @@ import (
 )
 
 type {{.TableName}}MapperImpl struct{
-	db *gorm.DB
+	DB *gorm.DB
 }
 
 // INTERFACE
 var _ {{.entity_name}}_mapper.{{.TableName}}Mapper = (*{{.TableName}}MapperImpl)(nil)
-
-func New{{.TableName}}MapperImpl(db *gorm.DB) *{{.TableName}}MapperImpl {
-	return &{{.TableName}}MapperImpl{db: db}
-}

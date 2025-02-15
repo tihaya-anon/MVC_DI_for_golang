@@ -13,6 +13,7 @@ var PATH = Path{
 			MAPPER: Mapper{
 				DIR:       []string{"resource", "template", "mapper"},
 				INTERFACE: []string{"mapper_interface.txt"},
+				BUILDER:   []string{"mapper_builder.txt"},
 				IMPL:      []string{"mapper_impl.txt"},
 			},
 			SERVICE: Service{
@@ -31,6 +32,7 @@ var PATH = Path{
 	},
 	MAPPER: Mapper{
 		INTERFACE: []string{"mapper"},
+		BUILDER:   []string{"mapper", "builder"},
 		IMPL:      []string{"mapper", "impl"},
 	},
 	SERVICE: Service{
@@ -69,6 +71,7 @@ type Controller = struct {
 type Mapper = struct {
 	DIR       []string
 	INTERFACE []string
+	BUILDER   []string
 	IMPL      []string
 }
 

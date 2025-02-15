@@ -2,14 +2,21 @@ package {{.entity_name}}_controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"{{.pkg}}/middleware"
 	{{.entity_name}}_service "{{.pkg}}/section/{{.entity_name}}/service"
 	"{{.pkg}}/resp"
 )
 
 type {{.TableName}}Controller struct {
 	{{.TableName}}Service {{.entity_name}}_service.{{.TableName}}Service
+	ProxyMiddleware *middleware.ProxyMiddleware
 }
 
 func (ctrl *{{.TableName}}Controller) Hello(ctx *gin.Context) *resp.IResponse {
-	return resp.NewResponse().SuccessWithData("hello `{{.table_name_hyphen}}`")
+	return ctrl.ProxyMiddleware.ProxyReturn(
+		ctx,
+		func() any {
+			return resp.NewResponse().SuccessWithData("hello `{{.table_name_hyphen}}`")
+		},
+	).(*resp.IResponse)
 }

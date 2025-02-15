@@ -30,4 +30,9 @@ func _generateMapper(pkg, basePath, entity, table string) {
 	implPath := append(mapperDir, global.PATH.MAPPER.IMPL...)
 
 	GenerateTemplate(pkg, path.Join(implTemplatePath...), path.Join(implPath...), "_mapper_impl", entity, table)
+
+	builderTemplatePath := append(mapperTemplatePath, global.PATH.RESOURCE.TEMPLATE.MAPPER.BUILDER...)
+	builderPath := append(mapperDir, global.PATH.MAPPER.BUILDER...)
+
+	GenerateTemplate(pkg, path.Join(builderTemplatePath...), path.Join(builderPath...), "_mapper_builder", entity, table)
 }
