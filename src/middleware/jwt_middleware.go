@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"MVC_DI/global/enum"
-	"MVC_DI/resp"
+	"MVC_DI/vo/resp"
 	"MVC_DI/security"
 	"strings"
 

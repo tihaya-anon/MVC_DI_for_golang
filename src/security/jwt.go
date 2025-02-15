@@ -8,14 +8,14 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-type ICustomClaims[T any] struct {
+type TCustomClaims[T any] struct {
 	Claims T
 	jwt.RegisteredClaims
 }
 
 func GenerateJWT[T any](claims T) (string, error) {
 	expiresAt := time.Now().Add(util.GetTime(config.Application.Jwt.Expiration))
-	customClaims := ICustomClaims[T]{
+	customClaims := TCustomClaims[T]{
 		Claims: claims,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expiresAt),
@@ -27,14 +27,14 @@ func GenerateJWT[T any](claims T) (string, error) {
 }
 
 func ParseJWT[T any](tokenString string) (T, error) {
-	claims := ICustomClaims[T]{}
+	claims := TCustomClaims[T]{}
 	token, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (any, error) {
 		return []byte(config.Application.Jwt.Secret), nil
 	})
 	if err != nil {
 		return claims.Claims, err
 	}
-	if claims, ok := token.Claims.(*ICustomClaims[T]); ok && token.Valid {
+	if claims, ok := token.Claims.(*TCustomClaims[T]); ok && token.Valid {
 		return claims.Claims, nil
 	}
 	return claims.Claims, err

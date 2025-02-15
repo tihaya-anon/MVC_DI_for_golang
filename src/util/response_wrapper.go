@@ -1,12 +1,12 @@
 package util
 
 import (
-	"MVC_DI/resp"
+	"MVC_DI/vo/resp"
 
 	"github.com/gin-gonic/gin"
 )
 
-type IHandlerFunc = func(ctx *gin.Context) *resp.IResponse
+type IHandlerFunc = func(ctx *gin.Context) *resp.TResponse
 
 type IRoutesWrapper struct {
 	Routes gin.IRoutes

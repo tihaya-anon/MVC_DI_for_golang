@@ -13,15 +13,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type ProxyImpl struct{}
-
-func (impl *ProxyImpl) Before(ctx *gin.Context) { fmt.Println("Before") }
-func (impl *ProxyImpl) After(ctx *gin.Context)  { fmt.Println("After") }
-
 func bindController() {
-	controller := test_controller_builder.NewTestAControllerBuilder().WithProxy(&ProxyImpl{}).Build()
-	// controller := test_controller_builder.NewTestAControllerBuilder().Build()
-	test_router.BindTestAController(controller)
+	testAController := test_controller_builder.NewTestAControllerBuilder().Build()
+	test_router.BindTestAController(testAController)
 }
 
 func startServer(publicPath, authPath string, engine *gin.Engine, timeOut time.Duration) {

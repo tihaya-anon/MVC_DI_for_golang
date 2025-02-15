@@ -5,28 +5,28 @@ import (
 	"MVC_DI/util/stream"
 )
 
-type IResponse struct {
+type TResponse struct {
 	Code string `json:"code"`
 	Msg  string `json:"msg,omitempty"`
 	Data any    `json:"data,omitempty"`
 }
 
-func NewResponse() *IResponse {
-	return &IResponse{}
+func NewResponse() *TResponse {
+	return &TResponse{}
 }
-func (response *IResponse) Success() *IResponse {
+func (response *TResponse) Success() *TResponse {
 	response.Code = enum.CODE.SUCCESS
 	response.Msg = enum.MSG.SUCCESS
 	return response
 }
 
-func (response *IResponse) SuccessWithData(data any) *IResponse {
+func (response *TResponse) SuccessWithData(data any) *TResponse {
 	response = response.Success()
 	response.Data = data
 	return response
 }
 
-func (response *IResponse) Error(code string, error error) *IResponse {
+func (response *TResponse) Error(code string, error error) *TResponse {
 	var msg string
 	if error != nil {
 		msg = error.Error()
@@ -38,19 +38,19 @@ func (response *IResponse) Error(code string, error error) *IResponse {
 	return response
 }
 
-func (response *IResponse) SystemError(error error) *IResponse {
+func (response *TResponse) SystemError(error error) *TResponse {
 	return response.Error(enum.CODE.SYSTEM_ERROR, error)
 }
 
-func (response *IResponse) CustomerError(error error) *IResponse {
+func (response *TResponse) CustomerError(error error) *TResponse {
 	return response.Error(enum.CODE.CUSTOMER_ERROR, error)
 }
 
-func (response *IResponse) ThirdPartyError(error error) *IResponse {
+func (response *TResponse) ThirdPartyError(error error) *TResponse {
 	return response.Error(enum.CODE.THIRD_PARTY_ERROR, error)
 }
 
-func (response *IResponse) ValidationError(errorMap map[string]error) *IResponse {
+func (response *TResponse) ValidationError(errorMap map[string]error) *TResponse {
 	response.Code = enum.CODE.VALIDATION_ERROR
 	response.Msg = enum.MSG.VALIDATION_ERROR
 	response.Data = stream.NewMapStream(errorMap).
@@ -63,7 +63,7 @@ func (response *IResponse) ValidationError(errorMap map[string]error) *IResponse
 	return response
 }
 
-func (response *IResponse) AllArgsConstructor(code string, msg string, data any) *IResponse {
+func (response *TResponse) AllArgsConstructor(code string, msg string, data any) *TResponse {
 	response.Code = code
 	response.Msg = msg
 	response.Data = data
