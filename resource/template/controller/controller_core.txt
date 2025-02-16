@@ -2,6 +2,7 @@ package {{.entity_name}}_controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 	"{{.pkg}}/middleware"
 	{{.entity_name}}_service "{{.pkg}}/section/{{.entity_name}}/service"
 	"{{.pkg}}/vo/resp"
@@ -10,13 +11,18 @@ import (
 type {{.TableName}}Controller struct {
 	{{.TableName}}Service {{.entity_name}}_service.{{.TableName}}Service
 	ProxyMiddleware *middleware.ProxyMiddleware
+	Logger *logrus.Logger
 }
 
 func (ctrl *{{.TableName}}Controller) Hello(ctx *gin.Context) *resp.TResponse {
-	return ctrl.ProxyMiddleware.ProxyReturn(
+	ret, err := ctrl.ProxyMiddleware.ProxyReturn(
 		ctx,
-		func() any {
-			return resp.NewResponse().SuccessWithData("hello `{{.table_name_hyphen}}`")
+		func() (any, error) {
+			return resp.NewResponse().SuccessWithData("hello `{{.table_name_hyphen}}`"), nil
 		},
-	).(*resp.TResponse)
+	)
+	if err != nil {
+		return resp.NewResponse().SystemError(err)
+	}
+	return ret.(*resp.TResponse)
 }

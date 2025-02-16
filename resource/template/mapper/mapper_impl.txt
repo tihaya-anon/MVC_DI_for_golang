@@ -4,10 +4,12 @@ import (
 	{{.entity_name}}_mapper "{{.pkg}}/section/{{.entity_name}}/mapper"
 
 	"gorm.io/gorm"
+	"github.com/sirupsen/logrus"
 )
 
 type {{.TableName}}MapperImpl struct{
 	DB *gorm.DB
+	Logger *logrus.Logger
 }
 
 // INTERFACE

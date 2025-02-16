@@ -1,31 +1,36 @@
 package middleware
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
+)
 
 type IProxy interface {
-	Before(ctx *gin.Context)
-	After(ctx *gin.Context)
+	Before(ctx *gin.Context, logger *logrus.Logger)
+	After(ctx *gin.Context, logger *logrus.Logger)
 }
 
-type ProxyMiddleware struct {
-	Proxy IProxy
+type LoggerProxyMiddleware struct {
+	Proxy  IProxy
+	Logger *logrus.Logger
 }
 
-func (middleware *ProxyMiddleware) ProxyVoid(ctx *gin.Context, fn func()) {
+func (middleware *LoggerProxyMiddleware) ProxyVoid(ctx *gin.Context, fn func()) {
 	if middleware.Proxy == nil {
 		fn()
 		return
 	}
-	middleware.Proxy.Before(ctx)
-	defer middleware.Proxy.After(ctx)
+	middleware.Proxy.Before(ctx, middleware.Logger)
 	fn()
+	middleware.Proxy.After(ctx, middleware.Logger)
 }
 
-func (middleware *ProxyMiddleware) ProxyReturn(ctx *gin.Context, fn func() any) any {
+func (middleware *LoggerProxyMiddleware) ProxyReturn(ctx *gin.Context, fn func() (any, error)) (any, error) {
 	if middleware.Proxy == nil {
 		return fn()
 	}
-	middleware.Proxy.Before(ctx)
-	defer middleware.Proxy.After(ctx)
-	return fn()
+	middleware.Proxy.Before(ctx, middleware.Logger)
+	ret, err := fn()
+	middleware.Proxy.After(ctx, middleware.Logger)
+	return ret, err
 }

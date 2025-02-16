@@ -4,11 +4,13 @@ import (
 	{{.entity_name}}_service "{{.pkg}}/section/{{.entity_name}}/service"
 	"{{.pkg}}/middleware"
 	{{.entity_name}}_mapper "{{.pkg}}/section/{{.entity_name}}/mapper"
+	"github.com/sirupsen/logrus"
 )
 
 type {{.TableName}}ServiceImpl struct{
 	{{.TableName}}Mapper {{.entity_name}}_mapper.{{.TableName}}Mapper
 	ProxyMiddleware *middleware.ProxyMiddleware
+	Logger *logrus.Logger
 }
 
 // INTERFACE

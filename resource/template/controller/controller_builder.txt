@@ -4,6 +4,8 @@ import (
   "{{.pkg}}/middleware"
   {{.entity_name}}_service "{{.pkg}}/section/{{.entity_name}}/service"
   {{.entity_name}}_controller "{{.pkg}}/section/{{.entity_name}}/controller"
+  
+	"github.com/sirupsen/logrus"
 )
 
 func (builder *{{.TableName}}ControllerBuilder) Build() *{{.entity_name}}_controller.{{.TableName}}Controller {
@@ -20,6 +22,12 @@ func (builder *{{.TableName}}ControllerBuilder) With{{.TableName}}Service({{.tab
 
 func (builder *{{.TableName}}ControllerBuilder) WithProxy(proxy middleware.IProxy) *{{.TableName}}ControllerBuilder {
 	builder.{{.tableName}}Controller.ProxyMiddleware.Proxy = proxy
+	return builder
+}
+
+func (builder *{{.TableName}}ControllerBuilder) WithLogger(logger *logrus.Logger) *{{.TableName}}ControllerBuilder {
+	builder.{{.tableName}}Controller.Logger = logger
+	builder.{{.tableName}}Controller.ProxyMiddleware.Logger = logger
 	return builder
 }
 

@@ -2,7 +2,12 @@ package log
 
 import (
 	"MVC_DI/config"
+	"MVC_DI/global/module"
+	"encoding/json"
 	"fmt"
+	"io"
+	"os"
+	"path"
 
 	"github.com/sirupsen/logrus"
 )
@@ -11,19 +16,49 @@ type DevFormatter struct{}
 
 func (f *DevFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	time := timeColor.Sprintf("%s", entry.Time.Format("01-02 15:04:05.000"))
-	level := levelColorMap[entry.Level].Sprintf(" [%s] ", levelNameMap[entry.Level])
+	level := levelColorMap[entry.Level].Sprintf("[%s]", levelNameMap[entry.Level])
 	message := entry.Message
-	caller := callerColor.Sprintf("(%s:%d)", (entry.Caller.File), entry.Caller.Line)
+	caller := callerColor.Sprintf("%v:%d", entry.Caller.File, entry.Caller.Line)
+	arrow := levelColorMap[entry.Level].Sprintf(">>")
+	stack := entry.Data["stack"]
 
-	logLine := fmt.Sprintf("%s%s%s\t%s\n", time, level, caller, message)
+	logLine := fmt.Sprintf("%s %s %s %s %s", time, level, caller, arrow, message)
 
-	return []byte(logLine), nil
+	if stack != nil {
+		stack = levelColorMap[entry.Level].Sprintf("%s", entry.Data["stack"])
+		logLine = fmt.Sprintf("%s %s %s %s %s\n%s", time, level, caller, arrow, message, stack)
+	}
+
+	return append([]byte(logLine), '\n'), nil
 }
 
 type ProdFormatter struct{}
 
+type Json struct {
+	Time    int    `json:"time"`
+	Level   string `json:"level"`
+	Caller  string `json:"caller"`
+	Message string `json:"message"`
+	Stack   string `json:"stack,omitempty"`
+}
+
 func (f *ProdFormatter) Format(entry *logrus.Entry) ([]byte, error) {
-	return []byte(entry.Message + "\n"), nil
+	jsonEntry := Json{
+		Time:    int(entry.Time.Unix()),
+		Level:   entry.Level.String(),
+		Caller:  fmt.Sprintf("%v:%d", entry.Caller.File, entry.Caller.Line),
+		Message: entry.Message,
+	}
+	stack := entry.Data["stack"]
+	if stack != nil {
+		jsonEntry.Stack = stack.(string)
+	}
+	jsonData, err := json.Marshal(jsonEntry)
+	if err != nil {
+		return nil, err
+	}
+	jsonData = append(jsonData, '\n')
+	return jsonData, nil
 }
 
 func GetLogger() *logrus.Logger {
@@ -38,6 +73,7 @@ func getDevLogger() *logrus.Logger {
 	logger.SetReportCaller(true)
 	logger.SetFormatter(&DevFormatter{})
 	logger.SetLevel(logrus.DebugLevel)
+	logger.AddHook(&StackTraceHook{})
 	return logger
 }
 
@@ -46,5 +82,9 @@ func getProdLogger() *logrus.Logger {
 	logger.SetReportCaller(true)
 	logger.SetFormatter(&ProdFormatter{})
 	logger.SetLevel(logrus.InfoLevel)
+	logger.AddHook(&StackTraceHook{})
+	file, _ := os.OpenFile(path.Join(module.GetRoot(), "log", "log.log"), os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	writers := []io.Writer{file, os.Stdout}
+	logger.SetOutput(io.MultiWriter(writers...))
 	return logger
 }

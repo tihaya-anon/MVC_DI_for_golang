@@ -1,6 +1,7 @@
 package {{.entity_name}}_service_builder
 
 import (
+	"github.com/sirupsen/logrus"
   "{{.pkg}}/middleware"
 	{{.entity_name}}_service "{{.pkg}}/section/{{.entity_name}}/service"
 	{{.entity_name}}_service_impl "{{.pkg}}/section/{{.entity_name}}/service/impl"
@@ -21,6 +22,12 @@ func (builder *{{.TableName}}ServiceBuilder) With{{.TableName}}Mapper(mapper {{.
 
 func (builder *{{.TableName}}ServiceBuilder) WithProxy(proxy middleware.IProxy) *{{.TableName}}ServiceBuilder {
 	builder.{{.tableName}}ServiceImpl.ProxyMiddleware.Proxy = proxy
+	return builder
+}
+
+func (builder *{{.TableName}}ServiceBuilder) WithLogger(logger *logrus.Logger) *{{.TableName}}ServiceBuilder {
+	builder.{{.tableName}}ServiceImpl.Logger = logger
+	builder.{{.tableName}}ServiceImpl.ProxyMiddleware.Logger = logger
 	return builder
 }
 
