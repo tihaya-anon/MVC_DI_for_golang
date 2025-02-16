@@ -16,8 +16,14 @@ import (
 // # Parse
 //
 // Parse Loads a config file into a struct
-func Parse[T any](file string, definition *T) error {
-	pathStr, fileStr := path.Split(file)
+func Parse[T any](file, env string, definition *T) error {
+	var envFile string
+	if env == "" {
+		envFile = file + ".yaml"
+	} else {
+		envFile = file + "-" + env + ".yaml"
+	}
+	pathStr, fileStr := path.Split(envFile)
 	pathStr = path.Join(module.GetRoot(), "resource", pathStr)
 	splitFile := strings.Split(fileStr, ".")
 

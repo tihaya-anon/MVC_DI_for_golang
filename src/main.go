@@ -1,8 +1,10 @@
 package main
 
-import "MVC_DI/cmd"
+import (
+	"MVC_DI/config"
+	"fmt"
+)
 
 func main() {
-	cmd.Start()
-	cmd.Stop()
+	fmt.Printf("config.Application: %+v\n", config.Application)
 }

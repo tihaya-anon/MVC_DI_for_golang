@@ -1,16 +1,5 @@
-database:
-  username: root
-  password: 030212Lyx
-  host: localhost
-  port: 3306
-  name: forum_shade
-  uri: ${.username}:${.password}@(${.host}:${.port})/${.name}?charset=utf8mb4&parseTime=True&loc=Local
-app:
-  host: localhost
-  port: 8080
-  uri: ${.host}:${.port}
+env: dev
 jwt:
-  secret: mysecret
   expiration:
     hour: 0
     minute: 15

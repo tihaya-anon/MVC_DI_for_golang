@@ -30,4 +30,5 @@ type IApplication struct {
     Database database
     App app
     Jwt jwt
+    Env string
 }

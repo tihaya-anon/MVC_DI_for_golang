@@ -14,9 +14,11 @@
         },
         "jwt": {
           "$ref": "#/definitions/JWT"
+        },
+        "env": {
+          "type": "string"
         }
       },
-      "required": ["app", "database", "jwt"],
       "title": "Application"
     },
     "App": {
@@ -33,7 +35,6 @@
           "type": "string"
         }
       },
-      "required": ["host", "port", "uri"],
       "title": "App"
     },
     "Database": {
@@ -59,7 +60,6 @@
           "type": "string"
         }
       },
-      "required": ["username", "password", "host", "name", "port", "uri"],
       "title": "Database"
     },
     "JWT": {
@@ -73,7 +73,6 @@
           "$ref": "#/definitions/Time"
         }
       },
-      "required": ["secret", "expiration"],
       "title": "JWT"
     },
     "Time": {
@@ -90,7 +89,6 @@
           "type": "integer"
         }
       },
-      "required": ["hour", "minute", "second"],
       "title": "Time"
     }
   }
