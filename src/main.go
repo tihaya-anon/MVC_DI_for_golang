@@ -1,10 +1,14 @@
 package main
 
 import (
-	"MVC_DI/config"
-	"fmt"
+	"MVC_DI/global/log"
 )
 
 func main() {
-	fmt.Printf("config.Application: %+v\n", config.Application)
+	logger := log.GetLogger()
+
+	logger.Debug("This is a debug message.")
+	logger.Info("This is an info message.")
+	logger.Warn("This is a warn message.")
+	logger.Error("This is an error message.")
 }
