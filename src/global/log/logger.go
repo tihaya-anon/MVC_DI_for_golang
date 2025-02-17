@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"time"
 
 	"github.com/sirupsen/logrus"
 )
@@ -15,18 +16,30 @@ import (
 type ConsoleFormatter struct{}
 
 func (f *ConsoleFormatter) Format(entry *logrus.Entry) ([]byte, error) {
-	time := timeColor.Sprintf("%s", entry.Time.Format("15:04:05.000"))
+	time := timeColor.Sprintf("%s", entry.Time.Format("2006-01-02 15:04:05.000"))
 	level := levelColorMap[entry.Level].Sprintf("[%s]", levelNameMap[entry.Level])
-	message := entry.Message
-	caller := callerColor.Sprintf("%v:%d", entry.Caller.File, entry.Caller.Line)
+	message := ""
+	caller := callerColor.Sprintf("%v:%d", entry.Caller.File[len(module.GetRoot()):], entry.Caller.Line)
 	arrow := levelColorMap[entry.Level].Sprintf(">>")
 	stack := entry.Data["stack"]
+	data := stream.NewMapStream(entry.Data).
+		Filter(func(key string, val any) bool {
+			return key != "stack"
+		}).
+		Map(func(key string, val any) (string, any) {
+			return key, fmt.Sprintf("%v", val)
+		}).
+		ToMap()
 
-	logLine := fmt.Sprintf("%s %s %s %s %s", time, level, caller, arrow, message)
+	for key, val := range data {
+		message = fmt.Sprintf("%s %s=%s", message, key, val)
+	}
+	message = fmt.Sprintf("%s `%s`", message, entry.Message)
+	logLine := fmt.Sprintf("%s %s %s\n\t%s %s", time, level, caller, arrow, message)
 
 	if stack != nil {
 		stack = levelColorMap[entry.Level].Sprintf("%s", entry.Data["stack"])
-		logLine = fmt.Sprintf("%s %s %s %s %s\n%s", time, level, caller, arrow, message, stack)
+		logLine = fmt.Sprintf("%s\n%s", logLine, stack)
 	}
 
 	return append([]byte(logLine), '\n'), nil
@@ -35,33 +48,68 @@ func (f *ConsoleFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 type ProdFormatter struct{}
 
 type Json struct {
-	Time    int    `json:"time"`
-	Level   string `json:"level"`
-	Caller  string `json:"caller"`
-	Message string `json:"message"`
-	Stack   string `json:"stack,omitempty"`
+	Time    int            `json:"time"`
+	Level   string         `json:"level"`
+	Caller  string         `json:"caller"`
+	Message string         `json:"message"`
+	Data    map[string]any `json:"data"`
 }
 
 type FileWriteHook struct {
-	level logrus.Level
+	level    logrus.Level
+	interval time.Duration
+	current  time.Time
+	file     *os.File
+}
+
+func NewFileWriteHook(level logrus.Level, interval time.Duration) *FileWriteHook {
+	hook := &FileWriteHook{
+		level:    level,
+		interval: interval,
+		current:  time.Now(),
+	}
+	file, err := hook.createLogFile()
+	if err != nil {
+		panic(err)
+	}
+	hook.file = file
+	return hook
+}
+
+func (hook *FileWriteHook) getFilePath() string {
+	timeStr := hook.current.Format("2006-01-02_15-04-05")
+	nameStr := "tmp"
+	return path.Join(module.GetRoot(), "log", timeStr, nameStr+".log")
+}
+
+func (hook *FileWriteHook) createLogFile() (*os.File, error) {
+	filePath := hook.getFilePath()
+	os.MkdirAll(path.Dir(filePath), os.ModePerm)
+	file, err := os.OpenFile(filePath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	return file, err
 }
 
 func (hook *FileWriteHook) Levels() []logrus.Level {
-	levels:= stream.NewListStream(logrus.AllLevels).Filter(func(level logrus.Level) bool { return level <= hook.level }).ToList()
-	fmt.Printf("levels: %v\n", levels)
+	levels := stream.NewListStream(logrus.AllLevels).Filter(func(level logrus.Level) bool { return level <= hook.level }).ToList()
 	return levels
 }
 
 func (hook *FileWriteHook) Fire(entry *logrus.Entry) error {
-	file, err := os.OpenFile(path.Join(module.GetRoot(), "log", "log.log"), os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	if err != nil {
-		return err
+	since := time.Since(hook.current)
+	if since > hook.interval {
+		hook.current = time.Now()
+		file, err := hook.createLogFile()
+		if err != nil {
+			return err
+		}
+		hook.file = file
 	}
+
 	jsonData, err := jsonFormat(entry)
 	if err != nil {
 		return err
 	}
-	file.Write(jsonData)
+	hook.file.Write(jsonData)
 	return nil
 }
 
@@ -71,10 +119,7 @@ func jsonFormat(entry *logrus.Entry) ([]byte, error) {
 		Level:   entry.Level.String(),
 		Caller:  fmt.Sprintf("%v:%d", entry.Caller.File, entry.Caller.Line),
 		Message: entry.Message,
-	}
-	stack := entry.Data["stack"]
-	if stack != nil {
-		jsonEntry.Stack = stack.(string)
+		Data:    entry.Data,
 	}
 	jsonData, err := json.Marshal(jsonEntry)
 	if err != nil {
@@ -84,9 +129,9 @@ func jsonFormat(entry *logrus.Entry) ([]byte, error) {
 	return jsonData, nil
 }
 
-func GetLogger() *logrus.Logger {
+func GetLogger(interval time.Duration) *logrus.Logger {
 	if config.Application.Env == "prod" {
-		return getProdLogger()
+		return getProdLogger(interval)
 	}
 	return getDevLogger()
 }
@@ -100,12 +145,12 @@ func getDevLogger() *logrus.Logger {
 	return logger
 }
 
-func getProdLogger() *logrus.Logger {
+func getProdLogger(interval time.Duration) *logrus.Logger {
 	logger := logrus.New()
 	logger.SetReportCaller(true)
 	logger.SetFormatter(&ConsoleFormatter{})
 	logger.SetLevel(logrus.InfoLevel)
 	logger.AddHook(&StackTraceHook{})
-	logger.AddHook(&FileWriteHook{logrus.InfoLevel})
+	logger.AddHook(NewFileWriteHook(logrus.InfoLevel, interval))
 	return logger
 }

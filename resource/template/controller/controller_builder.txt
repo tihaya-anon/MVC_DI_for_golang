@@ -1,11 +1,8 @@
 package {{.entity_name}}_controller_builder
 
 import (
-  "{{.pkg}}/middleware"
   {{.entity_name}}_service "{{.pkg}}/section/{{.entity_name}}/service"
   {{.entity_name}}_controller "{{.pkg}}/section/{{.entity_name}}/controller"
-  
-	"github.com/sirupsen/logrus"
 )
 
 func (builder *{{.TableName}}ControllerBuilder) Build() *{{.entity_name}}_controller.{{.TableName}}Controller {
@@ -20,17 +17,6 @@ func (builder *{{.TableName}}ControllerBuilder) With{{.TableName}}Service({{.tab
   return builder
 }
 
-func (builder *{{.TableName}}ControllerBuilder) WithProxy(proxy middleware.IProxy) *{{.TableName}}ControllerBuilder {
-	builder.{{.tableName}}Controller.ProxyMiddleware.Proxy = proxy
-	return builder
-}
-
-func (builder *{{.TableName}}ControllerBuilder) WithLogger(logger *logrus.Logger) *{{.TableName}}ControllerBuilder {
-	builder.{{.tableName}}Controller.Logger = logger
-	builder.{{.tableName}}Controller.ProxyMiddleware.Logger = logger
-	return builder
-}
-
 // BUILDER
 type {{.TableName}}ControllerBuilder struct {
   isStrict bool
@@ -40,9 +26,7 @@ type {{.TableName}}ControllerBuilder struct {
 func New{{.TableName}}ControllerBuilder() *{{.TableName}}ControllerBuilder {
   return &{{.TableName}}ControllerBuilder{
     isStrict: false,
-    {{.tableName}}Controller: &{{.entity_name}}_controller.{{.TableName}}Controller{
-      ProxyMiddleware: &middleware.ProxyMiddleware{},
-    },
+    {{.tableName}}Controller: &{{.entity_name}}_controller.{{.TableName}}Controller{},
   }
 }
 

@@ -15,33 +15,13 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
 
-type ControllerProxy struct{}
-
-func (c *ControllerProxy) Before(ctx *gin.Context, logger *logrus.Logger) {
-	logger.Info("In controller, before service")
-}
-
-func (c *ControllerProxy) After(ctx *gin.Context, logger *logrus.Logger) {
-	logger.Info("In controller, after service")
-}
-
-type ServiceProxy struct{}
-
-func (c *ServiceProxy) Before(ctx *gin.Context, logger *logrus.Logger) {
-	logger.Info("In service, before mapper")
-}
-
-func (c *ServiceProxy) After(ctx *gin.Context, logger *logrus.Logger) {
-	logger.Info("In service, after mapper")
-}
-
 func bindController() {
-	testAMapper := test_mapper_builder.NewTestAMapperBuilder().WithLogger(log.GetLogger()).Build()
-	testAService := test_service_builder.NewTestAServiceBuilder().WithLogger(log.GetLogger()).WithProxy(&ServiceProxy{}).WithTestAMapper(testAMapper).Build()
-	testAController := test_controller_builder.NewTestAControllerBuilder().WithLogger(log.GetLogger()).WithProxy(&ControllerProxy{}).WithTestAService(testAService).Build()
+	testAMapper := test_mapper_builder.NewTestAMapperBuilder().Build()
+	testAService := test_service_builder.NewTestAServiceBuilder().WithTestAMapper(testAMapper).Build()
+	testAController := test_controller_builder.NewTestAControllerBuilder().WithTestAService(testAService).Build()
+	testAController.Logger = log.GetLogger(24 * time.Hour)
 	test_router.BindTestAController(testAController)
 }
 
@@ -65,7 +45,11 @@ func Start() {
 	engine := gin.New()
 	engine.Use(gin.Recovery())
 	fmt.Printf("listen to: %s\n", config.Application.App.Uri)
-	startServer("/api/v1/public", "/api/v1/auth", engine, 5*time.Second)
+	publicPath := "/api/v1/public"
+	authPath := "/api/v1/auth"
+	fmt.Printf("public path: %s\n", publicPath)
+	fmt.Printf("auth path: %s\n", authPath)
+	startServer(publicPath, authPath, engine, 5*time.Second)
 }
 
 func Stop() {

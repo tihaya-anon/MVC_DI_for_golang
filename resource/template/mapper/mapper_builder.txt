@@ -5,7 +5,6 @@ import (
 	{{.entity_name}}_mapper_impl "{{.pkg}}/section/{{.entity_name}}/mapper/impl"
 	
 	"gorm.io/gorm"
-	"github.com/sirupsen/logrus"
 )
 
 func (builder *{{.TableName}}MapperBuilder) Build() {{.entity_name}}_mapper.{{.TableName}}Mapper {
@@ -15,11 +14,6 @@ func (builder *{{.TableName}}MapperBuilder) Build() {{.entity_name}}_mapper.{{.T
 func (builder *{{.TableName}}MapperBuilder) WithDB(DB *gorm.DB) *{{.TableName}}MapperBuilder {
   builder.{{.tableName}}MapperImpl.DB = DB
   return builder
-}
-
-func (builder *{{.TableName}}MapperBuilder) WithLogger(logger *logrus.Logger) *{{.TableName}}MapperBuilder {
-	builder.{{.tableName}}MapperImpl.Logger = logger
-	return builder
 }
 
 // BUILDER
