@@ -39,6 +39,7 @@ func (hook *StackTraceHook) Fire(entry *logrus.Entry) error {
 	entry.Data["stack"] = getStackTrace()
 	return nil
 }
+
 func getStackTrace() string {
 	buf := make([]byte, 4096)
 	n := runtime.Stack(buf, false)

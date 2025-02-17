@@ -3,19 +3,19 @@ package log
 import (
 	"MVC_DI/config"
 	"MVC_DI/global/module"
+	"MVC_DI/util/stream"
 	"encoding/json"
 	"fmt"
-	"io"
 	"os"
 	"path"
 
 	"github.com/sirupsen/logrus"
 )
 
-type DevFormatter struct{}
+type ConsoleFormatter struct{}
 
-func (f *DevFormatter) Format(entry *logrus.Entry) ([]byte, error) {
-	time := timeColor.Sprintf("%s", entry.Time.Format("01-02 15:04:05.000"))
+func (f *ConsoleFormatter) Format(entry *logrus.Entry) ([]byte, error) {
+	time := timeColor.Sprintf("%s", entry.Time.Format("15:04:05.000"))
 	level := levelColorMap[entry.Level].Sprintf("[%s]", levelNameMap[entry.Level])
 	message := entry.Message
 	caller := callerColor.Sprintf("%v:%d", entry.Caller.File, entry.Caller.Line)
@@ -42,7 +42,30 @@ type Json struct {
 	Stack   string `json:"stack,omitempty"`
 }
 
-func (f *ProdFormatter) Format(entry *logrus.Entry) ([]byte, error) {
+type FileWriteHook struct {
+	level logrus.Level
+}
+
+func (hook *FileWriteHook) Levels() []logrus.Level {
+	levels:= stream.NewListStream(logrus.AllLevels).Filter(func(level logrus.Level) bool { return level <= hook.level }).ToList()
+	fmt.Printf("levels: %v\n", levels)
+	return levels
+}
+
+func (hook *FileWriteHook) Fire(entry *logrus.Entry) error {
+	file, err := os.OpenFile(path.Join(module.GetRoot(), "log", "log.log"), os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		return err
+	}
+	jsonData, err := jsonFormat(entry)
+	if err != nil {
+		return err
+	}
+	file.Write(jsonData)
+	return nil
+}
+
+func jsonFormat(entry *logrus.Entry) ([]byte, error) {
 	jsonEntry := Json{
 		Time:    int(entry.Time.Unix()),
 		Level:   entry.Level.String(),
@@ -71,7 +94,7 @@ func GetLogger() *logrus.Logger {
 func getDevLogger() *logrus.Logger {
 	logger := logrus.New()
 	logger.SetReportCaller(true)
-	logger.SetFormatter(&DevFormatter{})
+	logger.SetFormatter(&ConsoleFormatter{})
 	logger.SetLevel(logrus.DebugLevel)
 	logger.AddHook(&StackTraceHook{})
 	return logger
@@ -80,11 +103,9 @@ func getDevLogger() *logrus.Logger {
 func getProdLogger() *logrus.Logger {
 	logger := logrus.New()
 	logger.SetReportCaller(true)
-	logger.SetFormatter(&ProdFormatter{})
+	logger.SetFormatter(&ConsoleFormatter{})
 	logger.SetLevel(logrus.InfoLevel)
 	logger.AddHook(&StackTraceHook{})
-	file, _ := os.OpenFile(path.Join(module.GetRoot(), "log", "log.log"), os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	writers := []io.Writer{file, os.Stdout}
-	logger.SetOutput(io.MultiWriter(writers...))
+	logger.AddHook(&FileWriteHook{logrus.InfoLevel})
 	return logger
 }
