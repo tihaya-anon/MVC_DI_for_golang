@@ -1,4 +1,4 @@
-env: prod
+env: dev
 jwt:
   expiration:
     hour: 0

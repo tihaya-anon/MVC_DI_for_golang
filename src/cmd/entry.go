@@ -44,6 +44,7 @@ func Start() {
 	gin.SetMode(gin.ReleaseMode)
 	engine := gin.New()
 	engine.Use(gin.Recovery())
+	fmt.Printf("activate profile: %s\n", config.Application.Env)
 	fmt.Printf("listen to: %s\n", config.Application.App.Uri)
 	publicPath := "/api/v1/public"
 	authPath := "/api/v1/auth"

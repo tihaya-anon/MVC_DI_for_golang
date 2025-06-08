@@ -2,7 +2,6 @@
   "yaml.schemas": {
     "schema/application.json": "/application*.yaml"
   },
-  "workbench.colorTheme": "Tokyo Night Storm",
   "files.autoSave": "afterDelay",
   "editor.formatOnSave": true,
   "explorer.confirmDelete": false,
