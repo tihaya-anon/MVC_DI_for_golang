@@ -21,7 +21,7 @@ func (response *TResponse) Success() *TResponse {
 }
 
 func (response *TResponse) SuccessWithData(data any) *TResponse {
-	response = response.Success()
+	*response = *response.Success()
 	response.Data = data
 	return response
 }

@@ -21,26 +21,37 @@
       "name": "Comments",
       "base": "messages",
       "color": "light-green-500",
-      "folderNames": ["comment", "comments"],
-      "rootFolderNames": ["section"]
+      "folderNames": [
+        "comment",
+        "comments"
+      ],
+      "rootFolderNames": [
+        "section"
+      ]
     },
     {
       "name": "Service",
       "base": "api",
       "color": "blue-600",
-      "folderNames": ["service"]
+      "folderNames": [
+        "service"
+      ]
     },
     {
       "name": "Model",
       "base": "class",
       "color": "green-500",
-      "folderNames": ["model"]
+      "folderNames": [
+        "model"
+      ]
     },
     {
       "name": "Impl",
       "base": "helper",
       "color": "brown-500",
-      "folderNames": ["impl"]
+      "folderNames": [
+        "impl"
+      ]
     }
   ],
   "material-icon-theme.folders.theme": "specific",
@@ -69,7 +80,11 @@
   "typescript.updateImportsOnFileMove.enabled": "always",
   "editor.wordWrap": "on",
   "workbench.iconTheme": "material-icon-theme",
-  "indentRainbow.excludedLanguages": ["java", "plaintext", "go"],
+  "indentRainbow.excludedLanguages": [
+    "java",
+    "plaintext",
+    "go"
+  ],
   "conventionalCommits.scopes": [
     "post",
     "user",

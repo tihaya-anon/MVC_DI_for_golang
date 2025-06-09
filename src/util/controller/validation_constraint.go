@@ -2,6 +2,7 @@ package controller_uitl
 
 import (
 	"MVC_DI/vo/resp/common"
+	"errors"
 	"reflect"
 
 	"github.com/gin-gonic/gin"
@@ -12,7 +13,8 @@ func BindValidation[T any](ctx *gin.Context) (*T, *common.ValidationError) {
 	var bind T
 	err := ctx.ShouldBind(&bind)
 	if err != nil {
-		if validationErrors, ok := err.(validator.ValidationErrors); ok {
+		var validationErrors validator.ValidationErrors
+		if errors.As(err, &validationErrors) {
 			field, msg := getValidationMsg(validationErrors, &bind)
 			return nil, &common.ValidationError{Field: field, Msg: msg}
 		}

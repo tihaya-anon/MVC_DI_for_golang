@@ -16,7 +16,7 @@ import (
 type ConsoleFormatter struct{}
 
 func (f *ConsoleFormatter) Format(entry *logrus.Entry) ([]byte, error) {
-	time := timeColor.Sprintf("%s", entry.Time.Format("2006-01-02 15:04:05.000"))
+	time_ := timeColor.Sprintf("%s", entry.Time.Format("2006-01-02 15:04:05.000"))
 	level := levelColorMap[entry.Level].Sprintf("[%s]", levelNameMap[entry.Level])
 	message := ""
 	caller := callerColor.Sprintf("%v:%d", entry.Caller.File[len(module.GetRoot()):], entry.Caller.Line)
@@ -35,7 +35,7 @@ func (f *ConsoleFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 		message = fmt.Sprintf("%s %s=%s", message, key, val)
 	}
 	message = fmt.Sprintf("%s `%s`", message, entry.Message)
-	logLine := fmt.Sprintf("%s %s %s\n\t%s %s", time, level, caller, arrow, message)
+	logLine := fmt.Sprintf("%s %s %s\n\t%s %s", time_, level, caller, arrow, message)
 
 	if stack != nil {
 		stack = levelColorMap[entry.Level].Sprintf("%s", entry.Data["stack"])
@@ -84,7 +84,10 @@ func (hook *FileWriteHook) getFilePath() string {
 
 func (hook *FileWriteHook) createLogFile() (*os.File, error) {
 	filePath := hook.getFilePath()
-	os.MkdirAll(path.Dir(filePath), os.ModePerm)
+	err := os.MkdirAll(path.Dir(filePath), os.ModePerm)
+	if err != nil {
+		return nil, err
+	}
 	file, err := os.OpenFile(filePath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	return file, err
 }
@@ -109,7 +112,10 @@ func (hook *FileWriteHook) Fire(entry *logrus.Entry) error {
 	if err != nil {
 		return err
 	}
-	hook.file.Write(jsonData)
+	_, err = hook.file.Write(jsonData)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

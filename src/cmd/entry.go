@@ -29,13 +29,13 @@ func startServer(publicPath, authPath string, engine *gin.Engine, timeOut time.D
 	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer cancel()
 
-	server := server.NewServer()
-	server.Setup(publicPath, authPath, engine)
-	server.Run()
+	newServer := server.NewServer()
+	newServer.Setup(publicPath, authPath, engine)
+	newServer.Run()
 
 	<-ctx.Done()
 
-	server.Stop(timeOut)
+	newServer.Stop(timeOut)
 }
 
 func Start() {
