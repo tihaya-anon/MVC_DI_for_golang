@@ -13,5 +13,8 @@ func HandlerWrapper(fn func(ctx *gin.Context) *TResponse) gin.HandlerFunc {
 }
 
 func ResponseWrapper(ctx *gin.Context, response *TResponse) {
+	if response == nil {
+		return
+	}
 	ctx.AbortWithStatusJSON(http.StatusOK, response)
 }
